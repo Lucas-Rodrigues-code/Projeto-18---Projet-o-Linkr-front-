@@ -1,38 +1,39 @@
 import styled from "styled-components"
-import { FiChevronDown } from "react-icons/fi";
-
+import Header from "../components/Header";
+import Posts from "../components/Posts";
+import MkPosts from "../components/MkPosts";
 export default function Timeline() {
     return(
     <Container>
-        <Header>  <div>linkr</div>  <div> <FiChevronDown/>
-<img src="https://http.cat/200" alt="https://http.cat/200"/></div> </Header>
+        <Header/>
+        <TimelineBody>
+            <h1>timeline</h1>
+            <MkPosts/>
+            <Posts/>
+        </TimelineBody>
     </Container>
+
     )
 }
 
 const Container = styled.div`
     background-color:#333333;
+    height:100vh;
+    font-family: 'Passion One', cursive;
 `
-const Header = styled.div`
-    background-color:#151515;
-    width:100%;
-    height:72px;
-    color:#FFF;
+const TimelineBody = styled.div`
+    background-color:#333333;
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content:space-between;
-    font-size:50px;
-    font-weight:700;
-    img{
-        width:53px;
-        height:53px;
-        border-radius: 26px;
-        margin-right:20px;
-    }
-    div{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        margin-left:20px;
+    width:100%;
+    height:100vh;
+    overflow-y: scroll;
+    h1{
+        margin-top:80px;
+        margin-bottom:40px;
+        font-size: 43px;
+        color:white;
     }
 `
+
