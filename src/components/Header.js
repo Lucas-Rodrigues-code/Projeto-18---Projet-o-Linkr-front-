@@ -10,12 +10,15 @@ export default function Header() {
             <RightBox>
                 <AiOutlineDown size="18px" color = "#FFFFFF" />
                 <UserIcon></UserIcon>
-        </RightBox>
+            </RightBox>
+            
         </HeaderBox>
     )
 }
 
 const HeaderBox = styled.header`
+    position:fixed;
+    top: 0;
     box-sizing: border-box;
     background-color: #151515;
     display: flex;
@@ -24,11 +27,13 @@ const HeaderBox = styled.header`
     height: 72px;
     padding: 10px 15px 10px 25px;
     width: 100%;
+    z-index: 1;
     
     p {
         color: #FFFFFF;
         font-family: 'Passion One', cursive;
         font-size: 50px;
+        font-weight: 700;
     }
 `
 const RightBox = styled.div`
