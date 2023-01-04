@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-
+import { HashTagPage } from "../pages/hashtagPage.js"
 export default function PageRoutes() {
 
     return (
@@ -8,7 +8,7 @@ export default function PageRoutes() {
         <BrowserRouter>
 
             <Routes>
-                {/* <Route path="/" element={<HomePage />}></Route> */}
+                <Route path="/hashTagPage" element={<HashTagPage/>}></Route>
             </Routes>
 
         </BrowserRouter>
