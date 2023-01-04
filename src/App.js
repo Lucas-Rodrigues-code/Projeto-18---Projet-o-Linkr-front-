@@ -1,10 +1,12 @@
+import PageRoutes from "./routes/PageRoutes.js"
+import AuthProvider from "./contexts/Auth"
 
-function App() {
+export default function App() {
   return (
-    <div>
-    ola
-    </div>
-  );
-}
+    <AuthProvider>
 
-export default App;
+      <PageRoutes />
+
+    </AuthProvider>
+  )
+}
