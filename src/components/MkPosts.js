@@ -13,7 +13,7 @@ export default function MkPosts() {
         <nav></nav>
         <main>
         <form>
-        <MyInput height={'20px'} placeholder="http://..."  onChange={e =>setPostLink(e2 => ({ ...e2, link: e.target.value }))} value={postLink.link} type="text" />
+        <MyInput height={'20px'} placeholder="http://..."  onChange={e =>setPostLink(e2 => ({ ...e2, link: e.target.value }))} value={postLink.link} type="text"  required/>
         <MyInput height={'60px'}placeholder="Awesome article about #javascript"  onChange={e =>setPostLink(e2 => ({ ...e2,description: e.target.value }))} value={postLink.description} type="text" />
         <button>Publish</button>
         </form>
@@ -27,10 +27,8 @@ const MKpost = styled.div`
     width:610px;
     min-height:210px;
     border-radius: 16px;
-    
     display: grid;
     height: 200px;
-    
     grid-template:
         [header-left] "head head" 55px [header-right]
         [main-left] "nav  main" 1fr [main-right]

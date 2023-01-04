@@ -22,7 +22,6 @@ const Post = styled.div`
         color:#FFFFFF;
         margin-top: 20px;
     height: 200px;
-    
     grid-template:
         [header-left] "head head" 55px [header-right]
         [main-left] "nav  main" 1fr [main-right]

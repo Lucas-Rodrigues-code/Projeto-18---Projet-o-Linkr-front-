@@ -2,12 +2,14 @@ import styled from "styled-components"
 import Header from "../components/Header";
 import Posts from "../components/Posts";
 import MkPosts from "../components/MkPosts";
+import TrendingBox from "../components/TrendingBox";
 export default function Timeline() {
     return(
     <Container>
         <Header/>
         <TimelineBody>
             <h1>timeline</h1>
+            <TrendingBox/>
             <MkPosts/>
             <Posts/>
         </TimelineBody>
@@ -29,6 +31,7 @@ const TimelineBody = styled.div`
     width:100%;
     height:100vh;
     overflow-y: scroll;
+    
     h1{
         margin-top:80px;
         margin-bottom:40px;
