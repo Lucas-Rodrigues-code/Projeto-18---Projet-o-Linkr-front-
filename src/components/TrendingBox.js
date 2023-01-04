@@ -16,7 +16,7 @@ const ExternalBox = styled.div`
     background-color: #171717;
     border-radius: 16px;
     height: 406px;
-    left: 880px;
+   right:10%;
     position: fixed;
     top: 241px;
     width: 300px;
