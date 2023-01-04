@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
+import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-import styled from 'styled-components';
-export default function Login() {
-
+export default function SigUp() {
     const [form, setForm] = useState({
+        name: "",
         email: "",
-        password: ""
+        password: "",
+        picture:""
     })
-
+    const navigate = useNavigate()
+    
     function handleForm(e) {
         e.preventDefault()
-        axios.post(`/sign-in`, form)
+        axios.post(`/sign-up`, form)
             .then((res) => {
-                console.log("deu boa")
+                navigate('/login')
             })
             .catch((err) => {
                 alert(err.response.data)
@@ -24,6 +26,7 @@ export default function Login() {
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
+
     return (
         <Container>
             <SideBar>
@@ -35,12 +38,14 @@ export default function Login() {
             </SideBar>
             <Inputs>
                 <form onSubmit={handleForm}>
-                    <input placeholder='e-mail' type="email" name="email" value={form.email} onChange={handleChange} required />
-                    <input placeholder='password' type="password" name="password" value={form.password} onChange={handleChange} required />
-                    <button>Log In</button>
+                    <input placeholder='e-mail'   type="text" name="email" value={form.email} onChange={handleChange} required/>
+                    <input placeholder='password' type="password" name="password" value={form.password} onChange={handleChange} required/>
+                    <input placeholder='username' type="text" name="name" value={form.name} onChange={handleChange} required/>
+                    <input placeholder='picture url' type="text" name="picture" value={form.picture} onChange={handleChange} required/>
+                    <button>Sign Up</button>
                 </form>
-                <Link to={"/sign-up"}>
-                    <h1>First time? Create an account!</h1>
+                <Link to={"/login"}>
+                    <h1>Switch back to log in</h1>
                 </Link>
             </Inputs>
         </Container>
