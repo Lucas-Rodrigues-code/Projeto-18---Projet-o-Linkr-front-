@@ -11,7 +11,7 @@ export default function SigUp() {
         picture:""
     })
     const navigate = useNavigate()
-    
+
     function handleForm(e) {
         e.preventDefault()
         axios.post(`/sign-up`, form)

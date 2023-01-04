@@ -1,18 +1,12 @@
-import Login from "./pages/Login";
-import SigUp from "./pages/SignUp"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PageRoutes from "./routes/PageRoutes.js"
+import AuthProvider from "./contexts/Auth.js"
 
-function App() {
+export default function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/sign-up" element={<SigUp />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <AuthProvider>
+      <PageRoutes />
+    </AuthProvider>
   )
 }
 
-export default App;
+
