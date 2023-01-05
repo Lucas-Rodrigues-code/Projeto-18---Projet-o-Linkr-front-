@@ -1,14 +1,30 @@
 import styled from "styled-components"
 import { AiOutlineHeart } from 'react-icons/ai';
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 export default function Posts() {
+    const navigate = useNavigate()
+    const tagStyle = {
+        color: '#FFFFFF',
+        fontWeight: 700,
+    };
 
-    return(
+    function hashtagNavigation(hashtag) {
+        const newHashtag = hashtag.replace("#", "")
+        navigate(`/hashtag/${newHashtag}`)
+    }
+
+    return (
         <Post>
-        <header><img src="https://http.cat/200" alt="https://http.cat/200"/>username</header>
-        <nav><AiOutlineHeart size={'25px'}/></nav>
-        <main>
-            <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p>
-        </main>
+            <header><img src="https://http.cat/200" alt="https://http.cat/200" />username</header>
+            <nav><AiOutlineHeart size={'25px'} /></nav>
+            <main>
+                <ReactTagify
+                    tagStyle={tagStyle}
+                    tagClicked={val => hashtagNavigation(val)}>
+                    <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada! #amigão</p>
+                </ReactTagify>
+            </main>
         </Post>
     )
 }

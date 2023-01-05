@@ -1,12 +1,48 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import { ReactTagify } from "react-tagify";
+import { useEffect } from "react";
+import axios from "axios";
 export default function TrendingBox() {
+
+    useEffect(() => {
+        const promisse = axios.get("https://linkr-api-jt7z.onrender.com/trends")
+
+        promisse.then(resp => {
+            console.log(resp)
+        })
+
+        promisse.catch((erro) => {
+
+            console.log(erro.response.data)
+        })
+
+
+    }, [])
+    
+
+    const navigate = useNavigate()
+
+    const tagStyle = {
+        color: '#FFFFFF',
+        fontWeight: 700,
+    };
+
+    function hashtagNavigation(hashtag) {
+        const newHashtag = hashtag.replace("#", "")
+
+        navigate(`/hashtag/${newHashtag}`)
+
+    }
     return (
         <ExternalBox>
             <TrendingHeader><h2>trending</h2></TrendingHeader>
             <HashtagBox>
-                <Hashtag># javascript</Hashtag>
-                <Hashtag># react</Hashtag>
+                <ReactTagify
+                    tagStyle={tagStyle}
+                    tagClicked={val => hashtagNavigation(val)}>
+                    <Hashtag>#javascript</Hashtag>
+                </ReactTagify>
             </HashtagBox>
         </ExternalBox>
     )
@@ -55,6 +91,7 @@ const Hashtag = styled.p`
         font-size: 19px;
         font-weight: 700;
         margin-bottom: 13px;
+        margin-left: 2px;
 `
 
 
