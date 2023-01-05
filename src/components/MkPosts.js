@@ -1,21 +1,36 @@
 import styled from "styled-components"
 import { useState } from "react"
+import axios from "axios"
 export default function MkPosts() {
+    const [buttonOff,setButtonOff] = useState(false)
     const [postLink,setPostLink] = useState(
         {
             link:"",
             description:"",
         }
     )
+    function publishPost(event){
+        event.preventDefault()
+        setButtonOff(true)
+        console.log(postLink)
+        const promise = axios.post("https://",postLink )
+        promise.then((res) =>setPostLink(
+            {
+                link:"",
+                description:"",
+            }
+             )&setButtonOff(false) )
+        promise.catch((err) => alert("Houve um erro ao publicar o seu link")& setButtonOff(false))
+    }
     return(
         <MKpost>
         <header><img src="https://http.cat/200" alt="https://http.cat/200"/>What are you going to share today?</header>
         <nav></nav>
         <main>
-        <form>
-        <MyInput height={'20px'} placeholder="http://..."  onChange={e =>setPostLink(e2 => ({ ...e2, link: e.target.value }))} value={postLink.link} type="text"  required/>
-        <MyInput height={'60px'}placeholder="Awesome article about #javascript"  onChange={e =>setPostLink(e2 => ({ ...e2,description: e.target.value }))} value={postLink.description} type="text" />
-        <button>Publish</button>
+        <form onSubmit={publishPost}>
+        <MyInput disabled={buttonOff} height={'20px'} placeholder="http://..."  onChange={e =>setPostLink(e2 => ({ ...e2, link: e.target.value }))} value={postLink.link} type="url"  required/>
+        <MyInput  disabled={buttonOff} height={'60px'}placeholder="Awesome article about #javascript"  onChange={e =>setPostLink(e2 => ({ ...e2,description: e.target.value }))} value={postLink.description} type="text" />
+        <button disabled={buttonOff} type="submit">{buttonOff===false?"Publish":"Publishing..."}</button>
         </form>
         </main>
         </MKpost>
