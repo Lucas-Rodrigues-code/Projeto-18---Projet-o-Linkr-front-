@@ -4,6 +4,14 @@ import Posts from "../components/Posts";
 import MkPosts from "../components/MkPosts";
 import TrendingBox from "../components/TrendingBox";
 export default function Timeline() {
+
+    const showPosts = [
+        {
+
+    },
+    {
+
+    }]
     return(
     <Container>
         <Header/>
@@ -11,6 +19,7 @@ export default function Timeline() {
             <h1>timeline</h1>
             <TrendingBox/>
             <MkPosts/>
+            {showPosts.map((e,i)=><Posts key={i}/>)}
             <Posts/>
         </TimelineBody>
     </Container>
