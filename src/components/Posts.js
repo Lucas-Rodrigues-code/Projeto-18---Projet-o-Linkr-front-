@@ -60,8 +60,9 @@ const Post = styled.div`
     border-radius: 16px;
     width:80px;
     display:flex;
-   justify-content:center;
-    }
+    justify-content:center;
+}
+
 
     main {
     grid-area: main;
