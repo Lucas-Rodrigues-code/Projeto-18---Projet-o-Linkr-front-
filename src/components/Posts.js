@@ -3,7 +3,6 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 export default function Posts({name,description}) {
-    console.log(description)
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
