@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import { BASE_URL} from '../constants/urls';
 import axios from "axios";
 
 export default function SigUp() {
@@ -8,15 +9,15 @@ export default function SigUp() {
         name: "",
         email: "",
         password: "",
-        picture:""
+        pictureUrl:""
     })
     const navigate = useNavigate()
 
     function handleForm(e) {
         e.preventDefault()
-        axios.post(`/sign-up`, form)
+        axios.post(`${BASE_URL}/sign-up`, form)
             .then((res) => {
-                navigate('/login')
+                navigate('/')
             })
             .catch((err) => {
                 alert(err.response.data)
@@ -41,10 +42,10 @@ export default function SigUp() {
                     <input placeholder='e-mail'   type="text" name="email" value={form.email} onChange={handleChange} required/>
                     <input placeholder='password' type="password" name="password" value={form.password} onChange={handleChange} required/>
                     <input placeholder='username' type="text" name="name" value={form.name} onChange={handleChange} required/>
-                    <input placeholder='picture url' type="text" name="picture" value={form.picture} onChange={handleChange} required/>
+                    <input placeholder='picture url' type="text" name="pictureUrl" value={form.pictureUrl} onChange={handleChange} required/>
                     <button>Sign Up</button>
                 </form>
-                <Link to={"/login"}>
+                <Link to={"/"}>
                     <h1>Switch back to log in</h1>
                 </Link>
             </Inputs>

@@ -17,13 +17,13 @@ export default function Posts() {
 
     return (
         <Post>
-            <header><img src="https://http.cat/200" alt="https://http.cat/200" />username</header>
+            <header><img src="https://http.cat/200" alt="https://http.cat/200" />{name}</header>
             <nav><AiOutlineHeart size={'25px'} /></nav>
             <main>
                 <ReactTagify
                     tagStyle={tagStyle}
                     tagClicked={val => hashtagNavigation(val)}>
-                    <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada! #amigão</p>
+                    <p>{description===undefined?"":description}</p>
                 </ReactTagify>
             </main>
         </Post>
