@@ -3,16 +3,36 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import findHashtags from "find-hashtags";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 export default function Posts() {
+    const [like, setLike] = useState(false)
+
+    useEffect(() =>{
+        axios.get("localhost:5000/likes")
+        .then((res) =>{
+            console.log(res)
+        })
+    }, [like])
+
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
         fontWeight: 700,
     };
 
+
+
     function hashtagNavigation(hashtag) {
         const newHashtag = hashtag.replace("#", "")
         navigate(`/hashtag/${newHashtag}`)
+    }
+
+    function likeUnlike(){
+        if (like){
+            axios.post("localhost:5000")
+        }
     }
 
     return (
@@ -55,10 +75,11 @@ const Post = styled.div`
     grid-area: nav;
     border-radius: 16px;
     width:80px;
+    height: 25px;
     display:flex;
     justify-content:center;
+    background-color: red;
 }
-
 
     main {
     grid-area: main;
