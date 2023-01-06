@@ -13,7 +13,7 @@ export default function MkPosts() {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
-        const promise = axios.post("https://",postLink )
+        const promise = axios.post("http://localhost:5000/timeline",postLink )
         promise.then((res) =>setPostLink(
             {
                 link:"",

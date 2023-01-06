@@ -3,15 +3,20 @@ import Header from "../components/Header";
 import Posts from "../components/Posts";
 import MkPosts from "../components/MkPosts";
 import TrendingBox from "../components/TrendingBox";
+import { useState,useEffect } from "react";
+import axios from "axios";
 export default function Timeline() {
 
-    const showPosts = [
-        {
+    const [showPosts,setShowPosts] = useState([])
+    useEffect(() => {
+        const promise = axios.get(`http://localhost:5000/timeline`)
+        promise.then(res => console.log(res.data) & setShowPosts(res.data)
+        )
+        promise.catch(erro => {
+            console.log(erro)
+        })
 
-    },
-    {
-
-    }]
+    }, [])
     return(
     <Container>
         <Header/>
@@ -19,7 +24,7 @@ export default function Timeline() {
             <h1>timeline</h1>
             <TrendingBox/>
             <MkPosts/>
-            {showPosts.map((e,i)=><Posts key={i}/>)}
+            {showPosts.map((e,i)=><Posts key={i} name={e.name} description={e.description}/>)}
             <Posts/>
         </TimelineBody>
     </Container>
