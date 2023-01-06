@@ -3,12 +3,13 @@ import Header from "../components/Header";
 import Posts from "../components/Posts";
 import MkPosts from "../components/MkPosts";
 import TrendingBox from "../components/TrendingBox";
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AuthContext } from "../contexts/Auth.js";
 
 export default function Timeline() {
-
+    const { token } = useContext(AuthContext)
     const [showPosts,setShowPosts] = useState([])
     const [loading,setLoading] = useState(true)
     useEffect(() => {
@@ -43,7 +44,7 @@ const TimelineBody = styled.div`
     background-color:#333333;
     display:flex;
     flex-direction:column;
-    align-items:center;
+    align-items:flex-start;
     width:100%;
     height:100vh;
     overflow-y: scroll;
