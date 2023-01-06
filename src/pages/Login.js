@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
+import { BASE_URL } from '../constants/urls';
 import axios from "axios";
-
 import styled from 'styled-components';
+
 export default function Login() {
 
     const [form, setForm] = useState({
@@ -12,8 +13,10 @@ export default function Login() {
 
     function handleForm(e) {
         e.preventDefault()
-        axios.post(`/sign-in`, form)
+        axios.post(`${BASE_URL}/sign-in`, form)
             .then((res) => {
+                console.log(res.data.token)
+                localStorage.setItem("token", res.data.token);
                 console.log("deu boa")
             })
             .catch((err) => {
