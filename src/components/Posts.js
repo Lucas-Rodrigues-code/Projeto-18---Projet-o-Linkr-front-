@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import findHashtags from "find-hashtags";
+
 export default function Posts(props) {
 
     const {name, description} = props

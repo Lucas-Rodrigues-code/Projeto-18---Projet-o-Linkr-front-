@@ -3,8 +3,8 @@ import { useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../contexts/Auth"
 import { useContext } from "react"
-import findHashtags from "find-hashtags"
-export default function MkPosts() {
+
+export default function MkPosts({setResetPage}) {
     const { token } = useContext(AuthContext)
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
@@ -19,12 +19,13 @@ export default function MkPosts() {
             "Authorization": `Bearer ${token}`
         }
     }
+    console.log(config)
     function publishPost(event) {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
 
-        const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", config, postLink)
+        const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", postLink, config)
         
         promise.then((res) => {         
             
