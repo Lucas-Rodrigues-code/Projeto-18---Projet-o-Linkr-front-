@@ -6,7 +6,6 @@ import TrendingBox from "../components/TrendingBox";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-
 export default function Timeline() {
 
     const [showPosts,setShowPosts] = useState([])
