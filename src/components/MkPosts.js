@@ -1,40 +1,57 @@
 import styled from "styled-components"
 import { useState } from "react"
 import axios from "axios"
+import { AuthContext } from "../contexts/Auth"
+import { useContext } from "react"
+import findHashtags from "find-hashtags"
 export default function MkPosts() {
-    const [buttonOff,setButtonOff] = useState(false)
-    const [postLink,setPostLink] = useState(
+    const { token } = useContext(AuthContext)
+    const [buttonOff, setButtonOff] = useState(false)
+    const [postLink, setPostLink] = useState(
         {
-            link:"",
-            description:"",
+            link: "",
+            description: "",
         }
     )
-    function publishPost(event){
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+    function publishPost(event) {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
-        const promise = axios.post("http://localhost:5000/timeline",postLink )
-        promise.then((res) =>setPostLink(
-            {
-                link:"",
-                description:"",
-            }
-             )&setButtonOff(false) )
-        promise.catch((err) => alert("Houve um erro ao publicar o seu link")& setButtonOff(false))
+
+        const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", config, postLink)
+        
+        promise.then((res) => {         
+            
+            setPostLink(
+                {
+                    link: "",
+                    description: "",
+                }
+            )
+            
+            setButtonOff(false)
+        })
+        promise.catch((err) => alert("Houve um erro ao publicar o seu link") & setButtonOff(false))
     }
-    return(
+    return (
         <MKpost>
-        <header><img src="https://http.cat/200" alt="https://http.cat/200"/>What are you going to share today?</header>
-        <nav></nav>
-        <main>
-        <form onSubmit={publishPost}>
-        <MyInput disabled={buttonOff} height={'20px'} placeholder="http://..."  onChange={e =>setPostLink(e2 => ({ ...e2, link: e.target.value }))} value={postLink.link} type="url"  required/>
-        <MyInput  disabled={buttonOff} height={'60px'}placeholder="Awesome article about #javascript"  onChange={e =>setPostLink(e2 => ({ ...e2,description: e.target.value }))} value={postLink.description} type="text" />
-        <button disabled={buttonOff} type="submit">{buttonOff===false?"Publish":"Publishing..."}</button>
-        </form>
-        </main>
+            <header><img src="https://http.cat/200" alt="https://http.cat/200" />What are you going to share today?</header>
+            <nav></nav>
+            <main>
+                <form onSubmit={publishPost}>
+                    <MyInput disabled={buttonOff} height={'20px'} placeholder="http://..." onChange={e => setPostLink(e2 => ({ ...e2, link: e.target.value }))} value={postLink.link} type="url" required />
+                    <MyInput disabled={buttonOff} height={'60px'} placeholder="Awesome article about #javascript" onChange={e => setPostLink(e2 => ({ ...e2, description: e.target.value }))} value={postLink.description} type="text" />
+                    <button disabled={buttonOff} type="submit">{buttonOff === false ? "Publish" : "Publishing..."}</button>
+                </form>
+            </main>
         </MKpost>
-    )       
+    )
 }
 
 const MKpost = styled.div`
@@ -92,6 +109,11 @@ const MKpost = styled.div`
         margin-left:20px;
         margin-right:43px;
     }
+
+    @media (max-width: 527px ) {
+        width: 100vw;
+        border-radius: 0;
+       }
     `
 
 const MyInput = styled.input`

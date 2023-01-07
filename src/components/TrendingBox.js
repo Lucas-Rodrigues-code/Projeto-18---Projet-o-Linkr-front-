@@ -1,62 +1,79 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../contexts/Auth";
+
 export default function TrendingBox() {
+    const { token } = useContext(AuthContext)
+    const navigate = useNavigate()
+    const [allTrends, setAllTrends] = useState([])
+    const tagStyle = {
+
+        color: '#FFFFFF',
+        fontWeight: 700,
+
+    };
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
 
     useEffect(() => {
-        const promisse = axios.get("https://linkr-api-jt7z.onrender.com/trends")
+        const promisse = axios.get("https://linkr-api-jt7z.onrender.com/hashtag", config)
 
         promisse.then(resp => {
-            console.log(resp)
+            setAllTrends(resp.data)
         })
-
         promisse.catch((erro) => {
-
             console.log(erro.response.data)
         })
 
-
     }, [])
-    
-
-    const navigate = useNavigate()
-
-    const tagStyle = {
-        color: '#FFFFFF',
-        fontWeight: 700,
-    };
 
     function hashtagNavigation(hashtag) {
         const newHashtag = hashtag.replace("#", "")
-
         navigate(`/hashtag/${newHashtag}`)
-
     }
-    return (
-        <ExternalBox>
-            <TrendingHeader><h2>trending</h2></TrendingHeader>
-            <HashtagBox>
-                <ReactTagify
-                    tagStyle={tagStyle}
-                    tagClicked={val => hashtagNavigation(val)}>
-                    <Hashtag>#javascript</Hashtag>
-                </ReactTagify>
-            </HashtagBox>
-        </ExternalBox>
-    )
+
+    if (allTrends.length === 0) {
+        return (
+            <ExternalBox>
+                <TrendingHeader><h2>trending</h2></TrendingHeader>
+                <HashtagBox>
+                    {allTrends.map((trend, index) => {
+                        return (
+                            <ReactTagify
+                                tagStyle={tagStyle}
+                                tagClicked={val => hashtagNavigation(val)}>
+                                <Hashtag key={index}>{trend}</Hashtag>
+                            </ReactTagify>
+                        )
+                    })}
+                </HashtagBox>
+            </ExternalBox>
+        )
+    }
 }
 
 const ExternalBox = styled.div`
+    display: block;
     background-color: #171717;
     border-radius: 16px;
     height: 406px;
-   right:10%;
+    right:10%;
     position: fixed;
-    top: 241px;
+    top: 200px;
     width: 300px;
     z-index: 1;
+
+    @media (max-width: 1282px) {
+    display: none;
+  }
+
 `
 const TrendingHeader = styled.div`
     border-bottom: 1px solid #484848;
