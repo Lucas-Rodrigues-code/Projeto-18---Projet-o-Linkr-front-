@@ -5,16 +5,10 @@ import { useNavigate } from "react-router-dom";
 import findHashtags from "find-hashtags";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../constants/urls";
 
-export default function Posts() {
+export default function Posts({id, likeQtd}) {
     const [like, setLike] = useState(false)
-
-    useEffect(() =>{
-        axios.get("localhost:5000/likes")
-        .then((res) =>{
-            console.log(res)
-        })
-    }, [like])
 
     const navigate = useNavigate()
     const tagStyle = {
@@ -30,14 +24,21 @@ export default function Posts() {
     }
 
     function likeUnlike(){
-        if (like){
-            axios.post("localhost:5000")
+        if (like === false){
+            axios.post(`${BASE_URL}/likes/${id}`)
+            .then((res) => console.log(res.data))
         }
+        if (like === true){
+            axios.delete(`${BASE_URL}/likes/${id}`)
+            .then((res) => console.log(res.data))
+        }
+        setLike(!like)
     }
 
     return (
         <Post>
             <header><img src="https://http.cat/200" alt="https://http.cat/200" />{name}</header>
+            {/* <header><img src="https://http.cat/200" alt="https://http.cat/200" />username</header> */}
             <nav><AiOutlineHeart size={'25px'} /></nav>
             <main>
                 <ReactTagify

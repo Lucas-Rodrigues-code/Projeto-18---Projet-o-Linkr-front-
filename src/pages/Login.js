@@ -10,7 +10,7 @@ export default function Login() {
         email: "",
         password: ""
     })
-
+    const navigate = useNavigate();
     function handleForm(e) {
         e.preventDefault()
         axios.post(`${BASE_URL}/sign-in`, form)
@@ -18,6 +18,7 @@ export default function Login() {
                 console.log(res.data.token)
                 localStorage.setItem("token", res.data.token);
                 console.log("deu boa")
+                navigate("/timeline")
             })
             .catch((err) => {
                 alert(err.response.data)
