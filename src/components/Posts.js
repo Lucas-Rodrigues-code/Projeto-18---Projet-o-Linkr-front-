@@ -3,7 +3,10 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import findHashtags from "find-hashtags";
-export default function Posts() {
+export default function Posts(props) {
+
+    const {name, description} = props
+
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
@@ -38,6 +41,7 @@ const Post = styled.div`
         display: grid;
         color:#FFFFFF;
         margin-top: 20px;
+        margin-bottom: 20px;
     height: 200px;
     grid-template:
         [header-left] "head head" 55px [header-right]
@@ -89,4 +93,8 @@ const Post = styled.div`
         margin-left:20px;
         margin-right:43px;
     }
+    @media (max-width: 527px ) {
+        width: 100vw;
+        border-radius: 0;
+       }
 `
