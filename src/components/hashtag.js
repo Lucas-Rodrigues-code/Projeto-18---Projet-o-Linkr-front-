@@ -6,8 +6,7 @@ export default function EachHashtag(props) {
     const { index, trend } = props;
     
     function hashtagNavigation(hashtag) {
-
-        const newHashtag = hashtag.replace("#", "")
+        const newHashtag = hashtag[0].replace("#", "")
         navigate(`/trends/${newHashtag}`)
     }
 

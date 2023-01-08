@@ -3,7 +3,8 @@ import { useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../contexts/Auth"
 import { useContext } from "react"
-
+import TrendingBox from "./TrendingBox"
+import { ReactTagify } from "react-tagify";
 export default function MkPosts({ setResetPage }) {
     const { token } = useContext(AuthContext)
     const [buttonOff, setButtonOff] = useState(false)
@@ -46,6 +47,8 @@ export default function MkPosts({ setResetPage }) {
         
         promise.then((res) => {         
             
+            insertTrends(postLink.description)
+
             setPostLink(
                 {
                     link: "",
@@ -60,6 +63,7 @@ export default function MkPosts({ setResetPage }) {
     return (
         <MKpost>
             <header><img src="https://http.cat/200" alt="https://http.cat/200" />What are you going to share today?</header>
+            <TrendingBox/>
             <nav></nav>
             <main>
                 <form onSubmit={publishPost}>
