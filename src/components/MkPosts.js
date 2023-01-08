@@ -25,7 +25,7 @@ export default function MkPosts({setResetPage}) {
         setButtonOff(true)
         console.log(postLink)
 
-        const promise = axios.post("http://localhost:5000/timeline", postLink, config)
+        const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", postLink, config)
         
         promise.then((res) => {         
             
