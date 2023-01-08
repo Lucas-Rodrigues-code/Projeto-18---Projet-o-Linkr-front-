@@ -14,8 +14,9 @@ export default function Posts(props) {
     };
 
     function hashtagNavigation(hashtag) {
+      
         const newHashtag = hashtag.replace("#", "")
-        navigate(`/hashtag/${newHashtag}`)
+        navigate(`/trends/${newHashtag}`)
     }
 
 

@@ -3,8 +3,9 @@ import { useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../contexts/Auth"
 import { useContext } from "react"
-
-export default function MkPosts({setResetPage}) {
+import TrendingBox from "./TrendingBox"
+import { ReactTagify } from "react-tagify";
+export default function MkPosts({ setResetPage }) {
     const { token } = useContext(AuthContext)
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
@@ -19,7 +20,24 @@ export default function MkPosts({setResetPage}) {
             "Authorization": `Bearer ${token}`
         }
     }
-    console.log(config)
+
+    async function insertTrends(string) {
+        console.log("entro na função")
+        const trendArray = string.match(/#\w+/g)
+        trendArray.forEach(hashtag => {
+            console.log(`inserindo ${hashtag}`)
+            axios.post("https://linkr-api-jt7z.onrender.com/trends", { trend: hashtag })
+                .then(
+                    res => {
+                        console.log(res)
+                        console.log(`inseriu ${hashtag}`)
+                    })
+                .catch(err => console.log(err))
+            console.log(`terminou`)
+        })
+    }
+
+
     function publishPost(event) {
         event.preventDefault()
         setButtonOff(true)
@@ -29,6 +47,8 @@ export default function MkPosts({setResetPage}) {
         
         promise.then((res) => {         
             
+            insertTrends(postLink.description)
+
             setPostLink(
                 {
                     link: "",
@@ -43,6 +63,7 @@ export default function MkPosts({setResetPage}) {
     return (
         <MKpost>
             <header><img src="https://http.cat/200" alt="https://http.cat/200" />What are you going to share today?</header>
+            <TrendingBox/>
             <nav></nav>
             <main>
                 <form onSubmit={publishPost}>
