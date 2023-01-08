@@ -17,7 +17,7 @@ export default function TrendingBox() {
     }
 
     useEffect(() => {
-        const promisse = axios.get("http://localhost:5000/hashtag", config)
+        const promisse = axios.get("https://linkr-api-jt7z.onrender.com", config)
 
         promisse.then(resp => {
             setAllTrends(resp.data)
