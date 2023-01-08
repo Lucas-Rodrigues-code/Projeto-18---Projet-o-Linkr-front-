@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios";
 import Header from "../components/Header.js"
@@ -6,10 +6,18 @@ import MkPosts from "../components/MkPosts.js";
 import Posts from "../components/Posts.js";
 import styled from "styled-components"
 import TrendingBox from "../components/TrendingBox.js"
+import { AuthContext } from "../contexts/Auth.js";
 export function HashTagPage() {
+    const { token } = useContext(AuthContext)
     const { hashtag } = useParams()
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
     useEffect(() => {
-        const promisse = axios.get(`https://linkr-api-jt7z.onrender.com/trends?hashtag=${hashtag}`)
+        const promisse = axios.get(`https://linkr-api-jt7z.onrender.com/trends?hashtag=${hashtag}`, config)
 
         promisse.then(resp => {
             console.log(resp)

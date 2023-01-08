@@ -1,50 +1,67 @@
-import styled from "styled-components"
-import { AiOutlineHeart } from 'react-icons/ai';
+import styled from "styled-components";
+import axios from "axios";
+import findHashtags from "find-hashtags";
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import findHashtags from "find-hashtags";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { BASE_URL } from "../constants/urls";
 
-export default function Posts({id, likeQtd}) {
-    const [like, setLike] = useState(false)
-
+export default function Posts({ name, description, id, likeQtd, likedBy, token }) {
+    const [likeNumber, setLikeNumber] = useState(likeQtd);
+    const [liked, setLiked] = useState(false);
     const navigate = useNavigate()
+    useEffect(() =>{
+        axios.get(`${BASE_URL}/likes`, {
+            authorization: `Bearer ${token}`
+        })
+        .then((res) => {
+            res.data.map((r) =>{
+                likedBy?.map((l) =>{
+                    if (r.id === l.id){
+                        setLiked(true);
+                    }
+                })
+            })
+        })
+    }, [])
+
     const tagStyle = {
         color: '#FFFFFF',
         fontWeight: 700,
     };
-
-
 
     function hashtagNavigation(hashtag) {
         const newHashtag = hashtag.replace("#", "")
         navigate(`/hashtag/${newHashtag}`)
     }
 
-    function likeUnlike(){
-        if (like === false){
-            axios.post(`${BASE_URL}/likes/${id}`)
-            .then((res) => console.log(res.data))
-        }
-        if (like === true){
-            axios.delete(`${BASE_URL}/likes/${id}`)
-            .then((res) => console.log(res.data))
-        }
-        setLike(!like)
+    function likePost() {
+        axios.post(`${BASE_URL}/likes/${id}`, {
+            headers:{
+                authorization: `Bearer ${token}`
+            }
+        })
+        .then((res) => {
+            setLikeNumber(res.data.rows.length);
+            setLiked(res.data.liked);
+        })
+        .catch((err) => console.log(err.response.data))
     }
 
     return (
         <Post>
             <header><img src="https://http.cat/200" alt="https://http.cat/200" />{name}</header>
-            {/* <header><img src="https://http.cat/200" alt="https://http.cat/200" />username</header> */}
-            <nav><AiOutlineHeart size={'25px'} /></nav>
+            {liked === false ? 
+                <nav><AiOutlineHeart size={'25px'} onClick={likePost} /><p>{likeNumber}</p></nav>
+            :
+            <nav><LikePost size={'25px'} onClick={likePost} /><p>{likeNumber}</p></nav>
+        }
             <main>
                 <ReactTagify
                     tagStyle={tagStyle}
                     tagClicked={val => hashtagNavigation(val)}>
-                    <p>{description===undefined?"":description}</p>
+                    <p>{description === undefined ? "" : description}</p>
                 </ReactTagify>
             </main>
         </Post>
@@ -59,6 +76,7 @@ const Post = styled.div`
         display: grid;
         color:#FFFFFF;
         margin-top: 20px;
+        margin-bottom: 20px;
     height: 200px;
     grid-template:
         [header-left] "head head" 55px [header-right]
@@ -76,12 +94,10 @@ const Post = styled.div`
     grid-area: nav;
     border-radius: 16px;
     width:80px;
-    height: 25px;
     display:flex;
-    justify-content:center;
-    background-color: red;
+    flex-direction: column;
+    align-items:center;
 }
-
     main {
     grid-area: main;
     border-radius: 16px;
@@ -112,4 +128,13 @@ const Post = styled.div`
         margin-left:20px;
         margin-right:43px;
     }
+    /* @media (max-width: 527px ) {
+        width: 100vw;
+        border-radius: 0;
+       } */
+`
+
+const LikePost = styled(AiFillHeart)`
+    color: red;
+
 `
