@@ -12,6 +12,7 @@ export default function Timeline() {
 
     const [showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
+    const [resetPage, setResetPage] = useState(0)
     useEffect(() => {
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline`)
         promise.then(res => setShowPosts(res.data) & setLoading(false)
@@ -19,7 +20,7 @@ export default function Timeline() {
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
 
-    }, [])
+    }, [resetPage])
 
     return (
         <Container>
