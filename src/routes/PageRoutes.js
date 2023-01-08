@@ -15,7 +15,7 @@ export default function PageRoutes() {
             <Routes>
                 {/* <Route path="/" element={<HomePage />}></Route> */}
                 <Route path="/timeline" element={<Timeline />}></Route>
-                <Route path="/hashtag/:hashtag" element={<HashTagPage />}></Route>
+                <Route path="/trends/:hashtag" element={<HashTagPage />}></Route>
                 <Route path="/" element={<Login />} />
                 <Route path="/sign-up" element={<SigUp />} />
             </Routes>

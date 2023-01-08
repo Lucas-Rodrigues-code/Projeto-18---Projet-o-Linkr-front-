@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios";
 import Header from "../components/Header.js"
@@ -7,39 +7,33 @@ import Posts from "../components/Posts.js";
 import styled from "styled-components"
 import TrendingBox from "../components/TrendingBox.js"
 import { AuthContext } from "../contexts/Auth.js";
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 export function HashTagPage() {
-    const { token } = useContext(AuthContext)
     const { hashtag } = useParams()
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    }
+    const [showPosts, setShowPosts] = useState([])
+    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        const promisse = axios.get(`https://linkr-api-jt7z.onrender.com/trends?hashtag=${hashtag}`, config)
+   
+       useEffect(() => {
+           const promise = axios.get(`https://linkr-api-jt7z.onrender.com/trends/${hashtag}`)
 
-        promisse.then(resp => {
-            console.log(resp)
-        })
-
-        promisse.catch((erro) => {
-
-            console.log(erro.response.data)
-        })
+        promise.then(res => setShowPosts(res.data) & setLoading(false)
+        )
+        promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
+        )
 },[])
     
     
-    const showPosts = [{},{}]
     return (
         <Container>
             <Header />
             <TimelineBody>
-                <h1>{hashtag}</h1>
+                <h1>timeline</h1>
                 <TrendingBox />
                 <MkPosts />
-                {showPosts.map((e, i) => <Posts key={i} />)}
-                <Posts />
+                <InnerContainer>
+                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} name={e.name} description={e.description} />)}
+                </InnerContainer>
             </TimelineBody>
         </Container>
 
@@ -47,27 +41,47 @@ export function HashTagPage() {
 }
 
 
+const InnerContainer = styled.div`
+
+    overflow-y: auto;
+
+`
+
 const Container = styled.div`
     background-color:#333333;
+    margin-top: 0;
     height:100vh;
     font-family: 'Passion One', cursive;
+
 `
 const TimelineBody = styled.div`
     background-color:#333333;
     display:flex;
     flex-direction:column;
     align-items:flex-start;
-    width:100%;
+    margin-left: 241px;
+    margin-bottom: 5px;
+    min-width: 100vw;
     height:100vh;
     overflow-y: scroll;
-   /*  position: fixed;
-    top: 232px;
-    left: 241px; */
+    h3{
+        font-size:50px;
+        margin-top:30px;
+    }
     h1{
-        margin-top:80px;
+        margin-top:120px;
         margin-bottom:40px;
         font-size: 43px;
         color:white;
     }
+
+    @media (max-width: 1282px) {
+    display:flex;
+    align-items: center;
+    width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+  }
 `
+
 

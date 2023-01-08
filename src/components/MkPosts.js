@@ -4,7 +4,7 @@ import axios from "axios"
 import { AuthContext } from "../contexts/Auth"
 import { useContext } from "react"
 
-export default function MkPosts({setResetPage}) {
+export default function MkPosts({ setResetPage }) {
     const { token } = useContext(AuthContext)
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
@@ -19,23 +19,44 @@ export default function MkPosts({setResetPage}) {
             "Authorization": `Bearer ${token}`
         }
     }
-    console.log(config)
+
+    async function insertTrends(string) {
+        console.log("entro na função")
+        const trendArray = string.match(/#\w+/g)
+        trendArray.forEach(hashtag => {
+            /* "https://linkr-api-jt7z.onrender.com/trends" */
+            console.log(`inserindo ${hashtag}`)
+            axios.post("https://linkr-api-jt7z.onrender.com/trends", { trend: hashtag })
+                .then(
+                    res => {
+                        console.log(res)
+                        console.log(`inseriu ${hashtag}`)
+                    })
+                .catch(err => console.log(err))
+            console.log(`terminou`)
+        })
+    }
+
+
     function publishPost(event) {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
 
         const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", postLink, config)
-        
-        promise.then((res) => {         
-            
+
+        promise.then((res) => {
+
+            insertTrends(postLink.description)
+
+
             setPostLink(
                 {
                     link: "",
                     description: "",
                 }
             )
-            
+
             setButtonOff(false)
         })
         promise.catch((err) => alert("Houve um erro ao publicar o seu link") & setButtonOff(false))
