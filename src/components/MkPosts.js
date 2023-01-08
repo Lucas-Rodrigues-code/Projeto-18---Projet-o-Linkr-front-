@@ -24,7 +24,6 @@ export default function MkPosts({ setResetPage }) {
         console.log("entro na função")
         const trendArray = string.match(/#\w+/g)
         trendArray.forEach(hashtag => {
-            /* "https://linkr-api-jt7z.onrender.com/trends" */
             console.log(`inserindo ${hashtag}`)
             axios.post("https://linkr-api-jt7z.onrender.com/trends", { trend: hashtag })
                 .then(
