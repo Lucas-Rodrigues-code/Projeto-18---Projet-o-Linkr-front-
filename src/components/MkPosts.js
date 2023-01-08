@@ -44,19 +44,16 @@ export default function MkPosts({ setResetPage }) {
         console.log(postLink)
 
         const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", postLink, config)
-
-        promise.then((res) => {
-
-            insertTrends(postLink.description)
-
-
+        
+        promise.then((res) => {         
+            
             setPostLink(
                 {
                     link: "",
                     description: "",
                 }
             )
-
+            
             setButtonOff(false)
         })
         promise.catch((err) => alert("Houve um erro ao publicar o seu link") & setButtonOff(false))

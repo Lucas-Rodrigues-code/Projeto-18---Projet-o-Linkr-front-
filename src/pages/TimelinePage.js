@@ -27,7 +27,7 @@ export default function Timeline() {
             <TimelineBody>
                 <h1>timeline</h1>
                 <TrendingBox />
-                <MkPosts />
+                <MkPosts setResetPage={setResetPage} />
                 <InnerContainer>
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} name={e.name} description={e.description} />)}
                 </InnerContainer>
