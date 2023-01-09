@@ -50,7 +50,7 @@ const ExternalBox = styled.div`
     background-color: #171717;
     border-radius: 16px;
     height: 406px;
-    right:10%;
+    right:8%;
     position: fixed;
     top: 200px;
     width: 300px;
