@@ -42,7 +42,7 @@ export default function MkPosts({ setResetPage }) {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
-
+        console.log('TOKEN ENVIADO',config.headers)
         const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", postLink, config)
         
         promise.then((res) => {         
