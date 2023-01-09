@@ -34,7 +34,7 @@ export function HashTagPage() {
                         imageUrl={e.imageUrl} imageDescription={e.imageDescription} name={e.name} description={e.description} />)}
                 </InnerContainer>
             </TimelineBody>
-        </Container
+        </Container>
 
     )
 }
