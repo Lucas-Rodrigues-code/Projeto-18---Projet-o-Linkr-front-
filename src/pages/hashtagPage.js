@@ -13,7 +13,7 @@ export function HashTagPage() {
     const { hashtag } = useParams()
     const[showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
-    const [resetPage, setResetPage] = useState(0)
+
     useEffect(() => {
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/trends/${hashtag}`)
         promise.then(res => setShowPosts(res.data) & setLoading(false)
@@ -21,15 +21,14 @@ export function HashTagPage() {
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
 
-    }, [resetPage])
+    }, [])
 
     return (
         <Container>
             <Header />
             <TimelineBody>
-                <h1>timeline</h1>
+                <h1>#hashtag</h1>
                 <TrendingBox />
-                <MkPosts setResetPage={setResetPage} />
                 <InnerContainer>
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} name={e.name} description={e.description} />)}
                 </InnerContainer>
