@@ -7,6 +7,7 @@ import TrendingBox from "./TrendingBox"
 import { ReactTagify } from "react-tagify";
 export default function MkPosts({ setResetPage,resetPage }) {
     const { token } = useContext(AuthContext)
+    console.log(`token vindo do usecontext ${token}`)
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
         {
