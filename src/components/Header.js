@@ -1,17 +1,44 @@
 import styled from "styled-components";
-import { AiOutlineDown } from "react-icons/ai"
-export default function Header() {
+import { AiOutlineDown, AiOutlineArrowUp } from "react-icons/ai"
+import { AuthContext } from "../contexts/Auth";
+import { useContext, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
+export default function Header() {
+    const { login, setLogin } = useContext(AuthContext);
+    const [logaout, setlogaout] = useState(true)
+
+    const navigate = useNavigate()
+    
+    function onLogaoutIcon() {
+        setlogaout(false)
+    }
+
+    function offLogaoutIcon() {
+        setlogaout(true)
+    }
+
+    function out() {
+        navigate("/")
+        window.location.reload()
+        localStorage.removeItem("login")
+    }
 
 
     return (
         <HeaderBox>
             <p >linkr</p>
             <RightBox>
-                <AiOutlineDown size="18px" color = "#FFFFFF" />
-                <UserIcon></UserIcon>
+                {logaout === true ? <AiOutlineDown size="18px" color="#FFFFFF" onClick={onLogaoutIcon} /> :
+                    <AiOutlineArrowUp size="18px" color="#FFFFFF" onClick={offLogaoutIcon} />}
+                {logaout === true ? <div></div> : <h1 onClick={out}>logaout</h1>}
+
+
+                <UserIcon>
+                    <img src={login?.imageUser} />
+                </UserIcon>
             </RightBox>
-            
+
         </HeaderBox>
     )
 }
@@ -42,6 +69,9 @@ display: flex;
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
+    h1{
+        color:white;
+    }
 `
 const UserIcon = styled.div`
     height: 53px;
@@ -49,4 +79,10 @@ const UserIcon = styled.div`
     border-radius: 25px;
     border: 1px solid black;
     margin-left: 15px;
+
+    img{
+        height: 53px;
+        width: 53px;
+        border-radius: 25px;
+    }
 `

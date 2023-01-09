@@ -2,11 +2,23 @@ import styled from "styled-components"
 import { useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../contexts/Auth"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
+import { useNavigate } from 'react-router-dom';
 import TrendingBox from "./TrendingBox"
 import { ReactTagify } from "react-tagify";
 export default function MkPosts({ setResetPage,resetPage }) {
-    const { token,myToken } = useContext(AuthContext)
+    const { login } = useContext(AuthContext)
+    const navigate = useNavigate()
+    useEffect(() => {
+
+        if (login === null || login === undefined) {
+            navigate("/")
+        } else {
+            navigate("/timeline")
+        }
+
+    }, [login])
+
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
         {
@@ -17,7 +29,8 @@ export default function MkPosts({ setResetPage,resetPage }) {
 
     const config = {
         headers: {
-            "Authorization": `Bearer ${myToken}`
+
+            "Authorization": `Bearer ${login?.token}`
         }
     }
 
@@ -36,6 +49,7 @@ export default function MkPosts({ setResetPage,resetPage }) {
             console.log(`terminou`)
         })
     }
+
 
 
     function publishPost(event) {
