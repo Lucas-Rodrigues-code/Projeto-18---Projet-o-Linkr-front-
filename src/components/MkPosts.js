@@ -55,7 +55,7 @@ export default function MkPosts({ setResetPage }) {
                     description: "",
                 }
             )
-            setResetPage(+1)
+            setResetPage(true)
             setButtonOff(false)
         })
         promise.catch((err) => alert("Houve um erro ao publicar o seu link") & setButtonOff(false))

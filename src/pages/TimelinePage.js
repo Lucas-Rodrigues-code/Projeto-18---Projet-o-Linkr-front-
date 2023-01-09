@@ -12,8 +12,9 @@ export default function Timeline() {
 
     const [showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
-    const [resetPage, setResetPage] = useState(0)
+    const [resetPage, setResetPage] = useState(false)
     useEffect(() => {
+        setResetPage(true)
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline`)
         promise.then(res => setShowPosts(res.data) & setLoading(false) & console.log(res.data)
         )
