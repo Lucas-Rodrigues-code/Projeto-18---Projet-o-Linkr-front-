@@ -2,10 +2,22 @@ import styled from "styled-components"
 import { useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../contexts/Auth"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
+import { useNavigate } from 'react-router-dom';
 
-export default function MkPosts({setResetPage}) {
-    const { token } = useContext(AuthContext)
+export default function MkPosts({ setResetPage }) {
+    const { login } = useContext(AuthContext)
+    const navigate = useNavigate()
+    useEffect(() => {
+
+        if (login === null || login === undefined) {
+            navigate("/")
+        } else {
+            navigate("/timeline")
+        }
+
+    }, [login])
+
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
         {
@@ -16,19 +28,19 @@ export default function MkPosts({setResetPage}) {
 
     const config = {
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${login?.token}`
         }
     }
-    console.log(config)
+    /* console.log(config) */
     function publishPost(event) {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
 
         const promise = axios.post("http://localhost:5000/timeline", postLink, config)
-        
-        promise.then((res) => {         
-            
+
+        promise.then((res) => {
+
             setPostLink(
                 {
                     link: "",

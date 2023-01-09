@@ -5,6 +5,8 @@ import { BASE_URL} from '../constants/urls';
 import axios from "axios";
 
 export default function SigUp() {
+    const [button, Setbutton] = useState(false)
+
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -17,10 +19,11 @@ export default function SigUp() {
         e.preventDefault()
         axios.post(`${BASE_URL}/sign-up`, form)
             .then((res) => {
+                Setbutton(true)
                 navigate('/')
             })
             .catch((err) => {
-                alert(err.response.data)
+                alert(err.response.data.message)
             })
     }
 
@@ -43,7 +46,7 @@ export default function SigUp() {
                     <input placeholder='password' type="password" name="password" value={form.password} onChange={handleChange} required/>
                     <input placeholder='username' type="text" name="name" value={form.name} onChange={handleChange} required/>
                     <input placeholder='picture url' type="text" name="pictureUrl" value={form.pictureUrl} onChange={handleChange} required/>
-                    <button>Sign Up</button>
+                    <button disabled={button}>Sign Up</button>
                 </form>
                 <Link to={"/"}>
                     <h1>Switch back to log in</h1>

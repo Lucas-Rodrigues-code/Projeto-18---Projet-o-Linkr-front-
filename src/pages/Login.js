@@ -3,26 +3,40 @@ import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { BASE_URL } from '../constants/urls';
 import axios from "axios";
 import styled from 'styled-components';
+import { AuthContext } from "../contexts/Auth";
 
 export default function Login() {
     const navigate = useNavigate()
+    const { login,setLogin } = useContext(AuthContext);
+    const [button, Setbutton] = useState(false)
+    console.log(login)
 
     const [form, setForm] = useState({
         email: "",
         password: ""
     })
+    useEffect(()=>{
+        
+        if(login === null || login === undefined ){
+            navigate("/")
+        } else{
+             navigate("/timeline") 
+        }
+
+    },[login])
 
     function handleForm(e) {
         e.preventDefault()
         axios.post(`${BASE_URL}/sign-in`, form)
             .then((res) => {
-                console.log(res.data.token)
-                localStorage.setItem("token", res.data.token);
+                console.log(res.data)
+                setLogin(res.data)
+                Setbutton(true)
                 navigate('/timeline')
 
             })
             .catch((err) => {
-                alert(err.response.data)
+                alert(err.response.data.message)
             })
     }
 
@@ -42,7 +56,7 @@ export default function Login() {
                 <form onSubmit={handleForm}>
                     <input placeholder='e-mail' type="email" name="email" value={form.email} onChange={handleChange} required />
                     <input placeholder='password' type="password" name="password" value={form.password} onChange={handleChange} required />
-                    <button>Log In</button>
+                    <button disabled={button}>Log In</button>
                 </form>
                 <Link to={"/sign-up"}>
                     <h1>First time? Create an account!</h1>
