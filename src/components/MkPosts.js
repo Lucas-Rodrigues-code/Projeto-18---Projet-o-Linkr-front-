@@ -6,8 +6,7 @@ import { useContext } from "react"
 import TrendingBox from "./TrendingBox"
 import { ReactTagify } from "react-tagify";
 export default function MkPosts({ setResetPage,resetPage }) {
-    const { token } = useContext(AuthContext)
-    console.log(`token vindo do usecontext ${token}`)
+    const { token,myToken } = useContext(AuthContext)
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
         {
@@ -18,7 +17,7 @@ export default function MkPosts({ setResetPage,resetPage }) {
 
     const config = {
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${myToken}`
         }
     }
 

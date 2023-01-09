@@ -3,10 +3,10 @@ import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { BASE_URL } from '../constants/urls';
 import axios from "axios";
 import styled from 'styled-components';
-
+import { AuthContext } from "../contexts/Auth";
 export default function Login() {
     const navigate = useNavigate()
-
+    const {myToken,setMytoken} = useContext(AuthContext)
     const [form, setForm] = useState({
         email: "",
         password: ""
@@ -17,6 +17,7 @@ export default function Login() {
         axios.post(`${BASE_URL}/sign-in`, form)
             .then((res) => {
                 console.log(res.data.token)
+                setMytoken(res.data.token)
                 localStorage.setItem("token", res.data.token);
                 navigate('/timeline')
 
