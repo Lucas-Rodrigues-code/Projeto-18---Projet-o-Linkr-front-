@@ -35,6 +35,7 @@ export default function Timeline() {
                 <MkPosts />
                 <InnerContainer>
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) =>{
+                        console.log(e.likedBy)
                         return <Posts key={i} name={e.name} description={e.description} id={e.postId} likeQtd={e.likeQtd} likedBy={e.likedBy} token={token}/>})}
                 </InnerContainer>
             </TimelineBody>

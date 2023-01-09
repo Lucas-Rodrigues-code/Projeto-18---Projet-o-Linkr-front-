@@ -6,25 +6,47 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../constants/urls";
+import { Popup } from "semantic-ui-react";
+
 
 export default function Posts({ name, description, id, likeQtd, likedBy, token }) {
     const [likeNumber, setLikeNumber] = useState(likeQtd);
     const [liked, setLiked] = useState(false);
+    const [user, setUser] = useState(0);
+    let namesArray = [];
+    let likesArray = [];
     const navigate = useNavigate()
     useEffect(() =>{
+        console.log(likedBy)
         axios.get(`${BASE_URL}/likes`, {
             authorization: `Bearer ${token}`
         })
         .then((res) => {
-            res.data.map((r) =>{
-                likedBy?.map((l) =>{
-                    if (r.id === l.id){
-                        setLiked(true);
-                    }
-                })
+            setUser(res.data[0].userId)
+            likesArray = []
+            console.log(id, likedBy)
+            likedBy?.map((l) =>{
+                console.log(l)
+                likesArray.push(l)
+                if (res.data[0].id === l.id){
+                    setLiked(true)
+                }
             })
+            console.log(likesArray)
+            showLikes()
         })
-    }, [])
+    }, [liked])
+
+    function showLikes(){
+        likesArray.reverse().map((a) =>{
+            console.log(a.userId)
+            if (a.userId === user){
+                a.username = "você"
+            }
+            namesArray.push(a.username)
+        })
+        console.log(namesArray.toString())
+    }
 
     const tagStyle = {
         color: '#FFFFFF',
@@ -37,12 +59,14 @@ export default function Posts({ name, description, id, likeQtd, likedBy, token }
     }
 
     function likePost() {
-        axios.post(`${BASE_URL}/likes/${id}`, {
-            headers:{
-                authorization: `Bearer ${token}`
-            }
-        })
+        // axios.post(`${BASE_URL}/likes/${id}`, {
+        //     headers:{
+        //         authorization: `Bearer ${token}`
+        //     }
+        // })
+        axios.post(`${BASE_URL}/likes/${id}`)
         .then((res) => {
+            console.log(res.data)
             setLikeNumber(res.data.rows.length);
             setLiked(res.data.liked);
         })
@@ -51,9 +75,17 @@ export default function Posts({ name, description, id, likeQtd, likedBy, token }
 
     return (
         <Post>
-            <header><img src="https://http.cat/200" alt="https://http.cat/200" />{name}</header>
+            <header><Popup trigger={<img src="https://http.cat/200" alt="https://http.cat/200" />}
+            content={"Olá"}
+            >
+                </Popup>{name}</header>
             {liked === false ? 
-                <nav><AiOutlineHeart size={'25px'} onClick={likePost} /><p>{likeNumber}</p></nav>
+                <nav><Popup
+                    trigger={<AiOutlineHeart size={'25px'} onClick={likePost} />}
+                    content={{namesArray}}
+                />
+                <Popup.Content>{namesArray}</Popup.Content>
+                <p>{likeNumber}</p></nav>
             :
             <nav><LikePost size={'25px'} onClick={likePost} /><p>{likeNumber}</p></nav>
         }
