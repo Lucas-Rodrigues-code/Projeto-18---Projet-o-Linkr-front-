@@ -12,9 +12,8 @@ export default function Timeline() {
 
     const [showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
-    const [resetPage, setResetPage] = useState(false)
+    const [resetPage, setResetPage] = useState(0)
     useEffect(() => {
-        setResetPage(true)
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline`)
         promise.then(res => setShowPosts(res.data) & setLoading(false) & console.log(res.data)
         )
@@ -29,7 +28,7 @@ export default function Timeline() {
             <TimelineBody>
                 <h1>timeline</h1>
                 <TrendingBox />
-                <MkPosts setResetPage={setResetPage} />
+                <MkPosts setResetPage={setResetPage} resetPage={resetPage} />
                 <InnerContainer>
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} userPhoto={e.userPhoto} link={e.link} title={e.title}
                     imageUrl={e.imageUrl} imageDescription={e.imageDescription}  name={e.name} description={e.description} />)}

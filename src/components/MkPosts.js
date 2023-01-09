@@ -5,7 +5,7 @@ import { AuthContext } from "../contexts/Auth"
 import { useContext } from "react"
 import TrendingBox from "./TrendingBox"
 import { ReactTagify } from "react-tagify";
-export default function MkPosts({ setResetPage }) {
+export default function MkPosts({ setResetPage,resetPage }) {
     const { token } = useContext(AuthContext)
     const [buttonOff, setButtonOff] = useState(false)
     const [postLink, setPostLink] = useState(
@@ -55,7 +55,7 @@ export default function MkPosts({ setResetPage }) {
                     description: "",
                 }
             )
-            setResetPage(true)
+            setResetPage(resetPage+1)
             setButtonOff(false)
         })
         promise.catch((err) => alert("Houve um erro ao publicar o seu link") & setButtonOff(false))
