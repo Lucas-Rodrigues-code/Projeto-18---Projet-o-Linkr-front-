@@ -1,20 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ReactTagify } from "react-tagify";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/Auth";
+import EachHashtag from "./hashtag.js";
 
 export default function TrendingBox() {
     const { token } = useContext(AuthContext)
-    const navigate = useNavigate()
+    
     const [allTrends, setAllTrends] = useState([])
-    const tagStyle = {
-
-        color: '#FFFFFF',
-        fontWeight: 700,
-
-    };
+    
 
     const config = {
         headers: {
@@ -27,30 +21,22 @@ export default function TrendingBox() {
 
         promisse.then(resp => {
             setAllTrends(resp.data)
+            
         })
         promisse.catch((erro) => {
             console.log(erro.response.data)
         })
 
-    }, [])
+    }, [])   
 
-    function hashtagNavigation(hashtag) {
-        const newHashtag = hashtag.replace("#", "")
-        navigate(`/hashtag/${newHashtag}`)
-    }
-
-    if (allTrends.length === 0) {
+    if (allTrends.length !== 0) {
         return (
             <ExternalBox>
                 <TrendingHeader><h2>trending</h2></TrendingHeader>
                 <HashtagBox>
                     {allTrends.map((trend, index) => {
                         return (
-                            <ReactTagify
-                                tagStyle={tagStyle}
-                                tagClicked={val => hashtagNavigation(val)}>
-                                <Hashtag key={index}>{trend}</Hashtag>
-                            </ReactTagify>
+                            <EachHashtag index={index} trend = {trend} />
                         )
                     })}
                 </HashtagBox>
@@ -102,13 +88,6 @@ const HashtagBox = styled.div`
     }
 `
 
-const Hashtag = styled.p`   
-        color: #FFFFFF;
-        font-family: 'Lato', sans-serif;
-        font-size: 19px;
-        font-weight: 700;
-        margin-bottom: 13px;
-        margin-left: 2px;
-`
+
 
 
