@@ -17,7 +17,7 @@ export default function SigUp() {
 
     function handleForm(e) {
         e.preventDefault()
-        axios.post(`${BASE_URL}/sign-up`, form)
+        axios.post(`https://linkr-api-jt7z.onrender.com/sign-up`, form)
             .then((res) => {
                 Setbutton(true)
                 navigate('/')

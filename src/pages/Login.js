@@ -27,7 +27,7 @@ export default function Login() {
 
     function handleForm(e) {
         e.preventDefault()
-        axios.post(`${BASE_URL}/sign-in`, form)
+        axios.post(`https://linkr-api-jt7z.onrender.com/sign-in`, form)
             .then((res) => {
                 console.log(res.data)
                 setLogin(res.data)
