@@ -15,7 +15,7 @@ export default function Timeline() {
     const [resetPage, setResetPage] = useState(0)
     useEffect(() => {
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline`)
-        promise.then(res => setShowPosts(res.data) & setLoading(false) & console.log(res.data)
+        promise.then(res => setShowPosts(res.data) & setLoading(false)&console.log(res.data)
         )
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
@@ -30,8 +30,8 @@ export default function Timeline() {
                 <TrendingBox />
                 <MkPosts setResetPage={setResetPage} resetPage={resetPage} />
                 <InnerContainer>
-                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} userPhoto={e.userPhoto} link={e.link} title={e.title}
-                    imageUrl={e.imageUrl} imageDescription={e.imageDescription}  name={e.name} description={e.description} />)}
+                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} usersPhoto={e.usersPhoto} link={e.link} title={e.title}
+                    imageUrl={e.imageUrl} imageDescription={e.imageDescription} userId={e.userId} name={e.name} description={e.description} />)}
                 </InnerContainer>
             </TimelineBody>
         </Container>

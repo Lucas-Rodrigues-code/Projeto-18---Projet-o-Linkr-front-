@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Posts(props) {
 
-    const {name, description,link,userPhoto,imageUrl,imageDescription,title} = props
-
+    const {name, description,link,usersPhoto,imageUrl,imageDescription,title,userId} = props
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
@@ -19,13 +18,17 @@ export default function Posts(props) {
         navigate(`/trends/${newHashtag}`)
     }
 
+    function usersPostNavigation(Id){
+        console.log(Id)
+        navigate(`/user/${Id}`)
+    }
 
     function goToUrl(){
         window.open(link)
     }
     return (
         <Post>
-            <header><img src={userPhoto} alt={userPhoto} />{name}</header>
+            <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={()=>usersPostNavigation(userId)}>{name}</h2></header>
             <nav><AiOutlineHeart size={'25px'} /></nav>
             <main>
                 <ReactTagify
@@ -55,6 +58,11 @@ const Post = styled.div`
         [header-left] "head head" 55px [header-right]
         [main-left] "nav  main" 1fr [main-right]
         / 120px 1fr;
+
+
+            h2{
+                font-size:25px;
+            }
 
     header {
     grid-area: head;
