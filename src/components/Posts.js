@@ -1,12 +1,15 @@
 import styled from "styled-components"
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Posts(props) {
 
-    const {name, description,link,userPhoto,imageUrl,imageDescription,title} = props
-
+    const { name, description, link, userPhoto, imageUrl, imageDescription, title } = props
+    const [heartColor, setheartColor] = useState(false)
+    const [like, setLike] = useState('loading')
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
@@ -14,26 +17,55 @@ export default function Posts(props) {
     };
 
     function hashtagNavigation(hashtag) {
-      
+
         const newHashtag = hashtag.replace("#", "")
         navigate(`/trends/${newHashtag}`)
     }
 
+    useEffect(() => {
+        const promisse = axios.get("https://linkr-api-jt7z.onrender.com/like",)
 
-    function goToUrl(){
+        promisse.then(resp => {
+            setLike(resp.data)
+
+        })
+        promisse.catch((erro) => {
+            console.log(erro.response.data)
+        })
+
+    }, [like])
+    
+
+    function likeOrDislike() {
+
+
+        if (heartColor) {
+            /* axios.update -1 */
+
+        }
+        setheartColor(!heartColor)
+
+    }
+
+    function goToUrl() {
         window.open(link)
     }
     return (
         <Post>
             <header><img src={userPhoto} alt={userPhoto} />{name}</header>
-            <nav><AiOutlineHeart size={'25px'} /></nav>
+            <nav> {heartColor ?
+                <AiFillHeart onClick={likeOrDislike} size={'25px'} color={'red'} /> :
+                <AiOutlineHeart onClick={likeOrDislike} size={'25px'} color={'white'} />}
+
+                <p>{like}</p>
+            </nav>
             <main>
                 <ReactTagify
                     tagStyle={tagStyle}
                     tagClicked={val => hashtagNavigation(val)}>
-                    <p>{description===undefined?"":description}</p>
+                    <p>{description === undefined ? "" : description}</p>
                 </ReactTagify>
-            
+
             </main>
             <LinkRedirect onClick={goToUrl}><div><h4>{title}</h4><h5>{imageDescription}</h5><a href={link} target="_blank" rel="noopener noreferrer">{link}</a></div><img src={imageUrl} alt={imageUrl} /></LinkRedirect>
         </Post>
@@ -68,7 +100,18 @@ const Post = styled.div`
     border-radius: 16px;
     width:80px;
     display:flex;
-   justify-content:center;
+    justify-content:flex-start;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+
+    p {
+        color: #FFFFFF;
+        font-size: 11px;
+        font-weight: 400;
+        font-family: 'Lato', sans-serif;
+        margin-top: 5px;
+        }
     }
 
     main {

@@ -11,6 +11,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 /* */
 export function HashTagPage() {
     const { hashtag } = useParams()
+    const [refresh, setRefresh] = useState(0)
     const[showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -21,14 +22,14 @@ export function HashTagPage() {
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
 
-    }, [])
+    }, [refresh])
 
     return (
         <Container>
             <Header />
             <TimelineBody>
-                <h1>timeline</h1>
-                <TrendingBox />
+                <h1>{hashtag}</h1>
+                <TrendingBox refresh={refresh} setRefresh={setRefresh} />
                 <InnerContainer>
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} userPhoto={e.userPhoto} link={e.link} title={e.title}
                         imageUrl={e.imageUrl} imageDescription={e.imageDescription} name={e.name} description={e.description} />)}

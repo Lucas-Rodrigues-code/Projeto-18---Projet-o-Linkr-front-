@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function EachHashtag(props) {
     const navigate = useNavigate()
-    const { index, trend } = props;
+    const { index, trend, setRefresh, refresh } = props;
     
     function hashtagNavigation(hashtag) {
         const newHashtag = hashtag[0].replace("#", "")
         navigate(`/trends/${newHashtag}`)
+        setRefresh(refresh + 1)
     }
 
     return (
