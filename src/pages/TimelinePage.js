@@ -30,7 +30,7 @@ export default function Timeline() {
                 <TrendingBox />
                 <MkPosts setResetPage={setResetPage} resetPage={resetPage} />
                 <InnerContainer>
-                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} usersPhoto={e.usersPhoto} link={e.link} title={e.title}
+                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} postId={e.postId} likeQtd={e.likeQtd} usersPhoto={e.usersPhoto} link={e.link} title={e.title}
                     imageUrl={e.imageUrl} imageDescription={e.imageDescription} userId={e.userId} name={e.name} description={e.description} />)}
                 </InnerContainer>
             </TimelineBody>

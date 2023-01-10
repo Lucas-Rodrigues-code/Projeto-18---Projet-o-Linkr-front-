@@ -7,9 +7,8 @@ import axios from "axios";
 
 export default function Posts(props) {
 
-    const {name, description,link,userPhoto,imageUrl,imageDescription,title} = props
+    const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd } = props
     const [heartColor, setheartColor] = useState(false)
-    const [like, setLike] = useState('loading')
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
@@ -31,27 +30,19 @@ export default function Posts(props) {
         window.open(link)
     }
 
-    useEffect(() => {
-        const promisse = axios.get("https://linkr-api-jt7z.onrender.com/like",)
+    function likeOrDislike() {
 
-        promisse.then(resp => {
-            setLike(resp.data)
-
-        })
-        promisse.catch((erro) => {
-            console.log(erro.response.data)
-        })
-
-    }, [like])
+        setheartColor(!heartColor)
+    }
 
     return (
         <Post>
-            <header><img src={userPhoto} alt={userPhoto} />{name}</header>
+            <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={() => usersPostNavigation(userId)}>{name}</h2></header>
             <nav> {heartColor ?
                 <AiFillHeart onClick={likeOrDislike} size={'25px'} color={'red'} /> :
                 <AiOutlineHeart onClick={likeOrDislike} size={'25px'} color={'white'} />}
 
-                <p>{like}</p>
+                <p>`{likeQtd} likes`</p>
             </nav>
             <main>
                 <ReactTagify
