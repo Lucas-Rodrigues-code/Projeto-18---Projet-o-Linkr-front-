@@ -7,8 +7,8 @@ import axios from "axios";
 
 export default function Posts(props) {
 
-    const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd } = props
-    const [heartColor, setheartColor] = useState(false)
+    const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd, setResetPage, resetPage } = props
+    const [iLike, setILike] = useState(false)
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
@@ -32,17 +32,34 @@ export default function Posts(props) {
 
     function likeOrDislike() {
 
-        setheartColor(!heartColor)
+        setILike(!iLike)
+
+        if (!iLike) {
+            axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`)
+                .then((res) => {
+                    setResetPage(resetPage + 1)
+                })
+                .catch(erro => console.log(erro.response.data)) 
+        }
+
+        if (iLike) {
+            axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`)
+                .then((res) => {
+                    setResetPage(resetPage + 1)
+                })
+                .catch(erro => console.log(erro.response.data))
+        }
+
     }
 
     return (
         <Post>
             <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={() => usersPostNavigation(userId)}>{name}</h2></header>
-            <nav> {heartColor ?
+            <nav> {iLike ?
                 <AiFillHeart onClick={likeOrDislike} size={'25px'} color={'red'} /> :
                 <AiOutlineHeart onClick={likeOrDislike} size={'25px'} color={'white'} />}
 
-                <p>`{likeQtd} likes`</p>
+                <p>{likeQtd} likes</p>
             </nav>
             <main>
                 <ReactTagify
