@@ -44,7 +44,7 @@ export default function Posts(props) {
 
         if (!iLike) {
             console.log(config)
-            axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`, config)
+            axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`, {}, config)
                 .then((res) => {
                     setResetPage(resetPage + 1)
                 })
