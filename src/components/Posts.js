@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineConsoleSql, AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -43,7 +43,7 @@ export default function Posts(props) {
         setILike(!iLike)
 
         if (!iLike) {
-            
+            console.log(config)
             axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`, config)
                 .then((res) => {
                     setResetPage(resetPage + 1)
@@ -52,6 +52,7 @@ export default function Posts(props) {
         }
 
         if (iLike) {
+            console.log(config)
             axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`,config)
                 .then((res) => {
                     setResetPage(resetPage + 1)
