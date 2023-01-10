@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { AiOutlineDown, AiOutlineArrowUp } from "react-icons/ai"
 import { AuthContext } from "../contexts/Auth";
 import { useContext, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
     const { login, setLogin } = useContext(AuthContext);
     const [logaout, setlogaout] = useState(true)
 
     const navigate = useNavigate()
-    
+
     function onLogaoutIcon() {
         setlogaout(false)
     }
@@ -25,9 +25,12 @@ export default function Header() {
     }
 
 
+
     return (
         <HeaderBox>
-            <p >linkr</p>
+            <Link style={{ textDecoration: 'none' }} to="/timeline">
+                <p>linkr</p>
+            </Link>
             <RightBox>
                 {logaout === true ? <AiOutlineDown size="18px" color="#FFFFFF" onClick={onLogaoutIcon} /> :
                     <AiOutlineArrowUp size="18px" color="#FFFFFF" onClick={offLogaoutIcon} />}

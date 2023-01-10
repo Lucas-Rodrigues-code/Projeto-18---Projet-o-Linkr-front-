@@ -1,11 +1,14 @@
 import styled from "styled-components"
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Posts(props) {
 
-    const {name, description,link,usersPhoto,imageUrl,imageDescription,title,userId} = props
+    const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd, setResetPage, resetPage } = props
+    const [iLike, setILike] = useState(false)
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
@@ -13,30 +16,58 @@ export default function Posts(props) {
     };
 
     function hashtagNavigation(hashtag) {
-      
+
         const newHashtag = hashtag.replace("#", "")
         navigate(`/trends/${newHashtag}`)
     }
-
-    function usersPostNavigation(Id){
+    function usersPostNavigation(Id) {
         console.log(Id)
         navigate(`/user/${Id}`)
     }
 
+
     function goToUrl(){
         window.open(link)
     }
+
+    function likeOrDislike() {
+
+        setILike(!iLike)
+
+        if (!iLike) {
+            axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`)
+                .then((res) => {
+                    setResetPage(resetPage + 1)
+                })
+                .catch(erro => console.log(erro.response.data)) 
+        }
+
+        if (iLike) {
+            axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`)
+                .then((res) => {
+                    setResetPage(resetPage + 1)
+                })
+                .catch(erro => console.log(erro.response.data))
+        }
+
+    }
+
     return (
         <Post>
-            <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={()=>usersPostNavigation(userId)}>{name}</h2></header>
-            <nav><AiOutlineHeart size={'25px'} /></nav>
+            <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={() => usersPostNavigation(userId)}>{name}</h2></header>
+            <nav> {iLike ?
+                <AiFillHeart onClick={likeOrDislike} size={'25px'} color={'red'} /> :
+                <AiOutlineHeart onClick={likeOrDislike} size={'25px'} color={'white'} />}
+
+                <p>{likeQtd} likes</p>
+            </nav>
             <main>
                 <ReactTagify
                     tagStyle={tagStyle}
                     tagClicked={val => hashtagNavigation(val)}>
-                    <p>{description===undefined?"":description}</p>
+                    <p>{description === undefined ? "" : description}</p>
                 </ReactTagify>
-            
+
             </main>
             <LinkRedirect onClick={goToUrl}><div><h4>{title}</h4><h5>{imageDescription}</h5><a href={link} target="_blank" rel="noopener noreferrer">{link}</a></div><img src={imageUrl} alt={imageUrl} /></LinkRedirect>
         </Post>
@@ -76,7 +107,18 @@ const Post = styled.div`
     border-radius: 16px;
     width:80px;
     display:flex;
-   justify-content:center;
+    justify-content:flex-start;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+
+    p {
+        color: #FFFFFF;
+        font-size: 11px;
+        font-weight: 400;
+        font-family: 'Lato', sans-serif;
+        margin-top: 5px;
+        }
     }
 
     main {

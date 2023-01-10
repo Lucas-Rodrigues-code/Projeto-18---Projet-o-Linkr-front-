@@ -4,7 +4,7 @@ import axios from "axios";
 import { AuthContext } from "../contexts/Auth";
 import EachHashtag from "./hashtag.js";
 
-export default function TrendingBox() {
+export default function TrendingBox({refresh, setRefresh}) {
     const { token } = useContext(AuthContext)
     
     const [allTrends, setAllTrends] = useState([])
@@ -36,7 +36,7 @@ export default function TrendingBox() {
                 <HashtagBox>
                     {allTrends.map((trend, index) => {
                         return (
-                            <EachHashtag index={index} trend = {trend} />
+                            <EachHashtag index={index} trend={trend} refresh={refresh} setRefresh={setRefresh} />
                         )
                     })}
                 </HashtagBox>
