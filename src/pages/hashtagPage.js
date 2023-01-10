@@ -16,7 +16,7 @@ export function HashTagPage() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const promise = axios.get(`https://linkr-api-jt7z.onrender.com/trends/${hashtag}`)
+        const promise = axios.get(`https://linkr-api-jt7z.onrender.com/${hashtag}`)
         promise.then(res => setShowPosts(res.data) & setLoading(false)
         )
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')

@@ -76,7 +76,7 @@ export default function MkPosts({ setResetPage,resetPage }) {
     }
     return (
         <MKpost>
-            <header><img src="https://http.cat/200" alt="https://http.cat/200" />What are you going to share today?</header>
+            <header><img src={login?.imageUser} alt={login?.imageUser} />What are you going to share today?</header>
             <TrendingBox/>
             <nav></nav>
             <main>

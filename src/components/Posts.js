@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function Posts(props) {
 
-    const { name, description, link, userPhoto, imageUrl, imageDescription, title } = props
+    const {name, description,link,userPhoto,imageUrl,imageDescription,title} = props
     const [heartColor, setheartColor] = useState(false)
     const [like, setLike] = useState('loading')
     const navigate = useNavigate()
@@ -20,6 +20,15 @@ export default function Posts(props) {
 
         const newHashtag = hashtag.replace("#", "")
         navigate(`/trends/${newHashtag}`)
+    }
+    function usersPostNavigation(Id) {
+        console.log(Id)
+        navigate(`/user/${Id}`)
+    }
+
+
+    function goToUrl(){
+        window.open(link)
     }
 
     useEffect(() => {
@@ -34,22 +43,7 @@ export default function Posts(props) {
         })
 
     }, [like])
-    
 
-    function likeOrDislike() {
-
-
-        if (heartColor) {
-            /* axios.update -1 */
-
-        }
-        setheartColor(!heartColor)
-
-    }
-
-    function goToUrl() {
-        window.open(link)
-    }
     return (
         <Post>
             <header><img src={userPhoto} alt={userPhoto} />{name}</header>
@@ -87,6 +81,11 @@ const Post = styled.div`
         [header-left] "head head" 55px [header-right]
         [main-left] "nav  main" 1fr [main-right]
         / 120px 1fr;
+
+
+            h2{
+                font-size:25px;
+            }
 
     header {
     grid-area: head;
