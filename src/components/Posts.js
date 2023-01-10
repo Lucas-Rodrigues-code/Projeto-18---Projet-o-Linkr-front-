@@ -2,11 +2,12 @@ import styled from "styled-components"
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../contexts/Auth";
 
 export default function Posts(props) {
-
+    const { login } = useContext(AuthContext)
     const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd, setResetPage, resetPage } = props
     const [iLike, setILike] = useState(false)
     const navigate = useNavigate()
@@ -14,6 +15,13 @@ export default function Posts(props) {
         color: '#FFFFFF',
         fontWeight: 700,
     };
+
+    const config = {
+        headers: {
+
+            "Authorization": `Bearer ${login?.token}`
+        }
+    }
 
     function hashtagNavigation(hashtag) {
 
@@ -35,7 +43,8 @@ export default function Posts(props) {
         setILike(!iLike)
 
         if (!iLike) {
-            axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`)
+            
+            axios.post(`https://linkr-api-jt7z.onrender.com/likes/${postId}`, config)
                 .then((res) => {
                     setResetPage(resetPage + 1)
                 })
@@ -43,7 +52,7 @@ export default function Posts(props) {
         }
 
         if (iLike) {
-            axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`)
+            axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`,config)
                 .then((res) => {
                     setResetPage(resetPage + 1)
                 })
