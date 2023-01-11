@@ -8,14 +8,12 @@ import styled from "styled-components"
 import TrendingBox from "../components/TrendingBox.js"
 import { AuthContext } from "../contexts/Auth.js";
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-/* */
 export function HashTagPage() {
     const { hashtag } = useParams()
     const [resetPage, setResetPage] = useState(0)
     const [refresh, setRefresh] = useState(0)
     const[showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
-
     useEffect(() => {
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/trends/${hashtag}`)
         promise.then(res => setShowPosts(res.data) & setLoading(false)
@@ -23,17 +21,17 @@ export function HashTagPage() {
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
 
-    }, [refresh])
+    }, [resetPage])
 
     return (
         <Container>
             <Header />
             <TimelineBody>
-                <h1>{hashtag}</h1>
+                <h1>timeline</h1>
                 <TrendingBox />
                 <InnerContainer>
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} postId={e.postId} setResetPage={setResetPage} resetPage={resetPage} likeQtd={e.likeQtd} usersPhoto={e.usersPhoto} link={e.link} title={e.title}
-                        imageUrl={e.imageUrl} imageDescription={e.imageDescription} userId={e.userId} name={e.name} description={e.description} />)}
+                        imageUrl={e.imageUrl} setRefresh={setRefresh} imageDescription={e.imageDescription} userId={e.userId} name={e.username} description={e.description} />)}
                 </InnerContainer>
             </TimelineBody>
         </Container>

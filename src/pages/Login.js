@@ -9,7 +9,7 @@ export default function Login() {
     const navigate = useNavigate()
     const { login,setLogin } = useContext(AuthContext);
     const [button, Setbutton] = useState(false)
-    console.log(login)
+   
 
     const [form, setForm] = useState({
         email: "",
