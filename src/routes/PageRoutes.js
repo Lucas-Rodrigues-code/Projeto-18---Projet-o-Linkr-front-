@@ -4,6 +4,7 @@ import { HashTagPage } from "../pages/hashtagPage.js"
 import UserTimeline from "../pages/UserTimeline"
 import SigUp from "../pages/SignUp"
 import Login from "../pages/Login"
+import FollowButton from "../components/followButton"
 
 export default function PageRoutes() {
 
@@ -19,6 +20,7 @@ export default function PageRoutes() {
                 <Route path="/trends/:hashtag" element={<HashTagPage />}></Route>
                 <Route path="/" element={<Login />} />
                 <Route path="/sign-up" element={<SigUp />} />
+                <Route path="/follow" element={<FollowButton />} />
             </Routes>
 
         </BrowserRouter>

@@ -15,7 +15,7 @@ export default function Posts(props) {
         color: '#FFFFFF',
         fontWeight: 700,
     };
-    console.log(likeQtd)
+    
     const config = {
         headers: {
 
