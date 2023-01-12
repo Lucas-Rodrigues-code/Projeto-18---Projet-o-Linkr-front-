@@ -9,13 +9,14 @@ import { AuthContext } from "../contexts/Auth";
 export default function Posts(props) {
     const { login } = useContext(AuthContext)
     const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd, setResetPage, resetPage } = props
+    
     const [iLike, setILike] = useState(false)
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
         fontWeight: 700,
     };
-    console.log(likeQtd)
+
     const config = {
         headers: {
 

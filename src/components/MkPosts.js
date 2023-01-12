@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react"
 import { useNavigate } from 'react-router-dom';
 import TrendingBox from "./TrendingBox"
 import { ReactTagify } from "react-tagify";
-export default function MkPosts({ setResetPage,resetPage }) {
+export default function MkPosts({ setResetPage, resetPage, numberOfPosts, setNumberOfPosts }) {
     const { login } = useContext(AuthContext)
     const navigate = useNavigate()
     useEffect(() => {
@@ -56,11 +56,12 @@ export default function MkPosts({ setResetPage,resetPage }) {
         event.preventDefault()
         setButtonOff(true)
         console.log(postLink)
-        console.log('TOKEN ENVIADO',config.headers)
+        console.log('TOKEN ENVIADO', config.headers)
+
         const promise = axios.post("https://linkr-api-jt7z.onrender.com/timeline", postLink, config)
-        
-        promise.then((res) => {         
-            
+
+        promise.then((res) => {
+            setNumberOfPosts(numberOfPosts + 1)
             insertTrends(postLink.description)
 
             setPostLink(
@@ -69,15 +70,16 @@ export default function MkPosts({ setResetPage,resetPage }) {
                     description: "",
                 }
             )
-            setResetPage(resetPage+1)
+            setResetPage(resetPage + 1)
             setButtonOff(false)
+            console.log('postando au')
         })
         promise.catch((err) => alert("Houve um erro ao publicar o seu link") & setButtonOff(false))
     }
     return (
         <MKpost>
             <header><img src={login?.imageUser} alt={login?.imageUser} />What are you going to share today?</header>
-            <TrendingBox/>
+            <TrendingBox />
             <nav></nav>
             <main>
                 <form onSubmit={publishPost}>

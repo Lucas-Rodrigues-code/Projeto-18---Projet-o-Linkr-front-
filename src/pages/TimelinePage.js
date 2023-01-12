@@ -7,20 +7,64 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { AuthContext } from "../contexts/Auth.js";
+import UpdateButton from "../components/UpdateButton.js";
+import useInterval from "use-interval";
 
 export default function Timeline() {
 
     const [showPosts, setShowPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [resetPage, setResetPage] = useState(0)
+    const [numberOfPosts, setNumberOfPosts] = useState(0)
+    const [difference, setDifference] = useState(0)
+    //console.log(`numberOfPosts:${numberOfPosts}`)
+    //console.log(`difference global ${difference}`)
+    
     useEffect(() => {
+        console.log(`reset global ${resetPage}`)
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline`)
-        promise.then(res => setShowPosts(res.data) & setLoading(false)&console.log(res.data)
+        promise.then(res => {
+            setShowPosts(res.data);
+            setLoading(false)
+        }
         )
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
 
+        console.log(`numberOfPosts: ${numberOfPosts}`)
+        const promise2 = axios.get(`https://linkr-api-jt7z.onrender.com/total`)
+        promise2.then(res => {
+            setNumberOfPosts(res.data.count)
+        }
+        )
+        promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
+        )
+
+
     }, [resetPage])
+
+    useInterval(() => {
+        console.log('update')
+        //console.log(`numberOfPosts: ${numberOfPosts}`)
+        const promise = axios.get(`https://linkr-api-jt7z.onrender.com/total`)
+        promise.then(res => {
+           // console.log(`total: ${res.data.count}`);
+            const difference = res.data.count - numberOfPosts
+           // console.log(`difference ${difference}`)
+
+            if (difference > 0) {
+                
+                setDifference(difference)
+            }
+
+        }
+        )
+        promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
+        )
+
+        
+
+    }, 5000)
 
     return (
         <Container>
@@ -28,10 +72,12 @@ export default function Timeline() {
             <TimelineBody>
                 <h1>timeline</h1>
                 <TrendingBox />
-                <MkPosts setResetPage={setResetPage} resetPage={resetPage} />
+                <MkPosts setResetPage={setResetPage} resetPage={resetPage} numberOfPosts={numberOfPosts} setNumberOfPosts={setNumberOfPosts} />
                 <InnerContainer>
+                    {difference > 0 && <UpdateButton  setResetPage = {setResetPage} resetPage = {resetPage} difference={difference} setDifference={setDifference} /> }
+                    
                     {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} postId={e.postId} setResetPage={setResetPage} resetPage={resetPage} likeQtd={e.likeQtd} usersPhoto={e.usersPhoto} link={e.link} title={e.title}
-                    imageUrl={e.imageUrl} imageDescription={e.imageDescription} userId={e.userId} name={e.name} description={e.description} />)}
+                        imageUrl={e.imageUrl} imageDescription={e.imageDescription} userId={e.userId} name={e.name} description={e.description} />)}
                 </InnerContainer>
             </TimelineBody>
         </Container>
