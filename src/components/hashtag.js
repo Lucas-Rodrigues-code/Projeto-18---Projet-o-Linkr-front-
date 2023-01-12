@@ -21,6 +21,7 @@ const Hashtag = styled.p`
         font-family: 'Lato', sans-serif;
         font-size: 19px;
         font-weight: 700;
-        margin-bottom: 13px;
+        margin-bottom: 11px;
         margin-left: 2px;
+        margin-top: 10px;
 `

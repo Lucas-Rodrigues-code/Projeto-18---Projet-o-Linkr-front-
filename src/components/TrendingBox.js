@@ -4,11 +4,11 @@ import axios from "axios";
 import { AuthContext } from "../contexts/Auth";
 import EachHashtag from "./hashtag.js";
 
-export default function TrendingBox({refresh, setRefresh}) {
+export default function TrendingBox({ refresh, setRefresh }) {
     const { token } = useContext(AuthContext)
-    
+
     const [allTrends, setAllTrends] = useState([])
-    
+
 
     const config = {
         headers: {
@@ -21,13 +21,13 @@ export default function TrendingBox({refresh, setRefresh}) {
 
         promisse.then(resp => {
             setAllTrends(resp.data)
-            
+
         })
         promisse.catch((erro) => {
             console.log(erro.response.data)
         })
 
-    }, [])   
+    }, [])
 
     if (allTrends.length !== 0) {
         return (
@@ -62,12 +62,12 @@ const ExternalBox = styled.div`
 
 `
 const TrendingHeader = styled.div`
+    box-sizing: border-box;
     border-bottom: 1px solid #484848;
-    height: 45px;
-    margin-left: 10px;
-    padding-top: 15px;
-    width: 100%;
-    
+    height: 50px;
+    display : flex;
+    padding-left: 10px;
+    align-items: center;
     h2 {
         color: #FFFFFF;
         font-family: 'Oswald', sans-serif;
@@ -78,7 +78,6 @@ const TrendingHeader = styled.div`
 
 const HashtagBox = styled.div`
     margin-left: 10px;
-    margin-top: 22px;
     
     h2 {
         color: #FFFFFF;
