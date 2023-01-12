@@ -72,7 +72,7 @@ export default function Timeline() {
             <TimelineBody>
                 <h1>timeline</h1>
                 <TrendingBox />
-                <MkPosts setResetPage={setResetPage} resetPage={resetPage} numberOfPosts={numberOfPosts} setNumberOfPosts={setNumberOfPosts} />
+                <MkPosts difference={difference} setDifference= {setDifference} setResetPage={setResetPage} resetPage={resetPage} numberOfPosts={numberOfPosts} setNumberOfPosts={setNumberOfPosts} />
                 <InnerContainer>
                     {difference > 0 && <UpdateButton  setResetPage = {setResetPage} resetPage = {resetPage} difference={difference} setDifference={setDifference} /> }
                     
