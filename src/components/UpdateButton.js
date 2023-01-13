@@ -1,5 +1,5 @@
 import styled from "styled-components"
-
+import { BiLoaderCircle } from "react-icons/bi"
 export default function UpdateButton({ difference, setDifference,resetPage, setResetPage }) {
 
     function resetDifference() {
@@ -12,7 +12,7 @@ export default function UpdateButton({ difference, setDifference,resetPage, setR
     return (
         <ButtonForUpdate onClick={resetDifference}>
             <p>
-                {difference} new posts, load more!
+                {difference} new posts, load more! <BiLoaderCircle size={'20px'} color={'white'} />
             </p>
         </ButtonForUpdate>
     )
