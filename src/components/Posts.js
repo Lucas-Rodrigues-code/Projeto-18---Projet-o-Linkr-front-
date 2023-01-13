@@ -139,6 +139,12 @@ const Post = styled.div`
     grid-area: main;
     border-radius: 16px;
     position:relative;
+    p{
+        color:#B7B7B7;
+        font-size: 17px;
+        font-weight: 400;
+        font-family: 'Lato', sans-serif;
+    }
     form{
         display:flex;
         flex-direction:column;
