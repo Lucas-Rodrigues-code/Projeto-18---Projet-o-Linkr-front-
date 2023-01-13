@@ -1,22 +1,22 @@
 import styled from "styled-components"
-import { AiFillHeart, AiOutlineConsoleSql, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineConsoleSql, AiOutlineHeart, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/Auth";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Posts(props) {
     const { login } = useContext(AuthContext)
-    const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd, setResetPage, resetPage } = props
-    
+    const { name, description, link, usersPhoto, imageUrl, imageDescription, title, userId, postId, likeQtd, setResetPage, resetPage, setLoading, setShowPosts } = props
+
     const [iLike, setILike] = useState(false)
     const navigate = useNavigate()
     const tagStyle = {
         color: '#FFFFFF',
         fontWeight: 700,
     };
-
     const config = {
         headers: {
 
@@ -27,18 +27,16 @@ export default function Posts(props) {
     function hashtagNavigation(hashtag) {
 
         const newHashtag = hashtag.replace("#", "")
+        setResetPage(resetPage + 1)
         navigate(`/trends/${newHashtag}`)
     }
     function usersPostNavigation(Id) {
         console.log(Id)
         navigate(`/user/${Id}`)
     }
-
-
-    function goToUrl(){
+    function goToUrl() {
         window.open(link)
     }
-
     function likeOrDislike() {
 
         setILike(!iLike)
@@ -49,12 +47,12 @@ export default function Posts(props) {
                 .then((res) => {
                     setResetPage(resetPage + 1)
                 })
-                .catch(erro => console.log(erro.response.data)) 
+                .catch(erro => console.log(erro.response.data))
         }
 
         if (iLike) {
             console.log(config)
-            axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`,config)
+            axios.delete(`https://linkr-api-jt7z.onrender.com/likes/${postId}`, config)
                 .then((res) => {
                     setResetPage(resetPage + 1)
                 })
@@ -63,29 +61,34 @@ export default function Posts(props) {
 
     }
 
+    
     return (
-        <Post>
-            <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={() => usersPostNavigation(userId)}>{name}</h2></header>
-            <nav> {iLike ?
-                <AiFillHeart onClick={likeOrDislike} size={'25px'} color={'red'} /> :
-                <AiOutlineHeart onClick={likeOrDislike} size={'25px'} color={'white'} />}
+        
+            <Post>
+                <header><img src={usersPhoto} alt={usersPhoto} /><h2 onClick={() => usersPostNavigation(userId)}>{name}</h2></header>
+                <nav> {iLike ?
+                    <AiFillHeart onClick={likeOrDislike} size={'25px'} color={'red'} /> :
+                    <AiOutlineHeart onClick={likeOrDislike} size={'25px'} color={'white'} />}
 
-                <p>{likeQtd} likes</p>
-            </nav>
-            <main>
-                <ReactTagify
-                    tagStyle={tagStyle}
-                    tagClicked={val => hashtagNavigation(val)}>
-                    <p>{description === undefined ? "" : description}</p>
-                </ReactTagify>
+                    <p>{likeQtd} likes</p>
+                </nav>
+                <main>
+                    <ReactTagify
+                        tagStyle={tagStyle}
+                        tagClicked={val => hashtagNavigation(val)}>
+                        <p>{description === undefined ? "" : description}</p>
+                    </ReactTagify>
 
-            </main>
-            <LinkRedirect onClick={goToUrl}><div><h4>{title}</h4><h5>{imageDescription}</h5><a href={link} target="_blank" rel="noopener noreferrer">{link}</a></div><img src={imageUrl} alt={imageUrl} /></LinkRedirect>
-        </Post>
+                </main>
+                <LinkRedirect onClick={goToUrl}><div><h4>{title}</h4><h5>{imageDescription}</h5><a href={link} target="_blank" rel="noopener noreferrer">{link}</a></div><img src={imageUrl} alt={imageUrl} /></LinkRedirect>
+            </Post>
     )
 }
 
+
+
 const Post = styled.div`
+
         width:610px;
         min-height:276px;
         background-color:#171717;
@@ -136,6 +139,12 @@ const Post = styled.div`
     grid-area: main;
     border-radius: 16px;
     position:relative;
+    p{
+        color:#B7B7B7;
+        font-size: 17px;
+        font-weight: 400;
+        font-family: 'Lato', sans-serif;
+    }
     form{
         display:flex;
         flex-direction:column;
@@ -162,6 +171,12 @@ const Post = styled.div`
         margin-left:20px;
         margin-right:43px;
     }
+
+    ::-webkit-scrollbar {
+        width: 0;
+    }
+     overflow-x: hidden;
+
     @media (max-width: 527px ) {
         width: 100vw;
         border-radius: 0;
@@ -172,11 +187,11 @@ const LinkRedirect = styled.div`
     height:155px;
     background-color:#171717;
     border: 1px solid #4D4D4D;
-border-radius: 11px;
-position:absolute;
-right:10px;
-bottom:10px;
-display:flex;
+    border-radius: 11px;
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    display:flex;
 
        h4{
         color:#CECECE;

@@ -9,6 +9,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { AuthContext } from "../contexts/Auth.js";
 import UpdateButton from "../components/UpdateButton.js";
 import useInterval from "use-interval";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function Timeline() {
 
@@ -19,9 +20,9 @@ export default function Timeline() {
     const [difference, setDifference] = useState(0)
     //console.log(`numberOfPosts:${numberOfPosts}`)
     //console.log(`difference global ${difference}`)
-    
+
     useEffect(() => {
-        console.log(`reset global ${resetPage}`)
+        /*         console.log(`reset global ${resetPage}`)*/
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline`)
         promise.then(res => {
             setShowPosts(res.data);
@@ -31,7 +32,7 @@ export default function Timeline() {
         promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
         )
 
-        console.log(`numberOfPosts: ${numberOfPosts}`)
+       /*  console.log(`numberOfPosts: ${numberOfPosts}`) */
         const promise2 = axios.get(`https://linkr-api-jt7z.onrender.com/total`)
         promise2.then(res => {
             setNumberOfPosts(res.data.count)
@@ -44,7 +45,7 @@ export default function Timeline() {
     }, [resetPage])
 
     useInterval(() => {
-        console.log('update')
+    
         //console.log(`numberOfPosts: ${numberOfPosts}`)
         const promise = axios.get(`https://linkr-api-jt7z.onrender.com/total`)
         promise.then(res => {
@@ -65,19 +66,58 @@ export default function Timeline() {
         
 
     }, 5000)
+    
+    function loadFunction() {
+        const page = showPosts.length / 10 + 1;
+        const limitLength = page * 10
+        console.log(`page: ${page}`)
+            
+        const promise = axios.get(`https://linkr-api-jt7z.onrender.com/timeline?limit=${page}`)
+        promise.then(res => {
+            console.log('then')
+            setShowPosts(res.data);
+            setLoading(false)
+        }
+        )
+        promise.catch(erro => console.log(erro) & alert('An error occured while trying to fetch the posts, please refresh the page')
+        )
+    } 
+
 
     return (
         <Container>
             <Header />
             <TimelineBody>
                 <h1>timeline</h1>
-                <TrendingBox />
-                <MkPosts setResetPage={setResetPage} resetPage={resetPage} numberOfPosts={numberOfPosts} setNumberOfPosts={setNumberOfPosts} />
+                <TrendingBox resetPage={resetPage} setResetPage = {setResetPage} />
+                <MkPosts difference={difference} setDifference= {setDifference} setResetPage={setResetPage} resetPage={resetPage} numberOfPosts={numberOfPosts} setNumberOfPosts={setNumberOfPosts} />
                 <InnerContainer>
                     {difference > 0 && <UpdateButton  setResetPage = {setResetPage} resetPage = {resetPage} difference={difference} setDifference={setDifference} /> }
-                    
-                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts key={i} postId={e.postId} setResetPage={setResetPage} resetPage={resetPage} likeQtd={e.likeQtd} usersPhoto={e.usersPhoto} link={e.link} title={e.title}
-                        imageUrl={e.imageUrl} imageDescription={e.imageDescription} userId={e.userId} name={e.name} description={e.description} />)}
+                    <InfiniteScroll
+                        dataLength={showPosts.length}
+                        next={loadFunction}
+                        hasMore={true}
+                        loader={<Loader> <AiOutlineLoading3Quarters /> <p>Loading more posts... </p></Loader>}
+                    >
+                    {loading ? <h3>Loading <AiOutlineLoading3Quarters /></h3> : showPosts.length === 0 ? <h3>There are no posts yet</h3> : showPosts.map((e, i) => <Posts
+                        description={e.description}
+                        imageDescription={e.imageDescription}
+                        imageUrl={e.imageUrl}
+                        key={i}
+                        likeQtd={e.likeQtd}
+                        link={e.link}
+                        name={e.name}
+                        postId={e.postId}
+                        resetPage={resetPage}
+                        setLoading={setLoading}
+                        setResetPage={setResetPage}
+                        setShowPosts = {setShowPosts}
+                        title={e.title}
+                        userId={e.userId}
+                        usersPhoto={e.usersPhoto}
+                        
+                    />)}
+                    </InfiniteScroll>
                 </InnerContainer>
             </TimelineBody>
         </Container>
@@ -86,9 +126,28 @@ export default function Timeline() {
 }
 
 const InnerContainer = styled.div`
-
+   
     overflow-y: auto;
-
+    ::-webkit-scrollbar {
+        width: 0;
+    }
+    
+`
+const Loader = styled.div`
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 78px;
+    flex-direction: column;
+    color: #6D6D6D;
+    font-size: 22px;
+    font-weight: 400;
+p {
+    margin-left: 18px;
+}
+font-family: 'Lato', 'Courier New', Courier, monospace;
 `
 
 const Container = styled.div`
@@ -104,16 +163,16 @@ const TimelineBody = styled.div`
     flex-direction:column;
     align-items:flex-start;
     margin-left: 241px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     min-width: 100vw;
-    height:100vh;
-    overflow-y: scroll;
+    height:700px;
+    overflow-y: auto;
     h3{
         font-size:50px;
         margin-top:30px;
     }
     h1{
-        margin-top:120px;
+        margin-top:110px;
         margin-bottom:40px;
         font-size: 43px;
         color:white;

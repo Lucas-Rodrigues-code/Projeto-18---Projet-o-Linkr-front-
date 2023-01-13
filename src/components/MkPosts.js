@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react"
 import { useNavigate } from 'react-router-dom';
 import TrendingBox from "./TrendingBox"
 import { ReactTagify } from "react-tagify";
-export default function MkPosts({ setResetPage, resetPage, numberOfPosts, setNumberOfPosts }) {
+export default function MkPosts({ setResetPage, resetPage, numberOfPosts, setNumberOfPosts, setDifference }) {
     const { login } = useContext(AuthContext)
     const navigate = useNavigate()
     useEffect(() => {
@@ -62,6 +62,7 @@ export default function MkPosts({ setResetPage, resetPage, numberOfPosts, setNum
 
         promise.then((res) => {
             setNumberOfPosts(numberOfPosts + 1)
+            setDifference(0)
             insertTrends(postLink.description)
 
             setPostLink(

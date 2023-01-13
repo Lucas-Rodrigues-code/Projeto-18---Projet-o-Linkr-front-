@@ -4,7 +4,7 @@ import axios from "axios";
 import { AuthContext } from "../contexts/Auth";
 import EachHashtag from "./hashtag.js";
 
-export default function TrendingBox({ refresh, setRefresh }) {
+export default function TrendingBox({ resetPage, setResetPage }) {
     const { token } = useContext(AuthContext)
 
     const [allTrends, setAllTrends] = useState([])
@@ -28,15 +28,16 @@ export default function TrendingBox({ refresh, setRefresh }) {
         })
 
     }, [])
-
+    console.log(allTrends)
     if (allTrends.length !== 0) {
         return (
             <ExternalBox>
                 <TrendingHeader><h2>trending</h2></TrendingHeader>
                 <HashtagBox>
                     {allTrends.map((trend, index) => {
+                        console.log(trend)
                         return (
-                            <EachHashtag index={index} trend={trend} refresh={refresh} setRefresh={setRefresh} />
+                            <EachHashtag index={index} trend={trend} resetPage={resetPage} setResetPage={setResetPage}   />
                         )
                     })}
                 </HashtagBox>
@@ -52,7 +53,7 @@ const ExternalBox = styled.div`
     height: 406px;
     right:8%;
     position: fixed;
-    top: 200px;
+    top: 192px;
     width: 300px;
     z-index: 1;
 
